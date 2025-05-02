@@ -130,6 +130,18 @@
   <div class="calculator-container">    
     <div class="grid">
       <div class="grid-item">
+        <label for="topOfFunnelInput">Top of Funnel Target Accounts (300-800):</label>
+        <input type="number" id="topOfFunnelInput" min="300" max="800" placeholder="e.g., 500" value="500">
+      </div>
+      
+      <div class="grid-item">
+        <label for="expressInterestRate">Express Interest Rate (10-30%):</label>
+        <input type="number" id="expressInterestRate" min="10" max="30" placeholder="e.g., 12" value="12">
+      </div>
+    </div>
+    
+    <div class="grid">
+      <div class="grid-item">
         <label for="closeRate">Enter your average close rate (%)</label>
         <input type="number" id="closeRate" min="0" max="100" placeholder="e.g., 25" value="25">
       </div>
@@ -142,14 +154,6 @@
     
     <div class="grid">
       <div class="grid-item">
-        <label for="accountType">Pick your plan:</label>
-        <select id="accountType">
-          <option value="Impact">Impact</option>
-          <option value="Scale">Scale</option>
-        </select>
-      </div>
-      
-      <div class="grid-item">
         <label for="paymentFrequency">Pick your payment option:</label>
         <select id="paymentFrequency">
           <option value="Monthly">Monthly</option>
@@ -161,26 +165,26 @@
     <button onclick="calculate()">Calculate ROI</button>
     
     <div class="calculation-section">
-      <h2>ROI Calculator - Using Minimum Conversation Guarantee</h2>
+      <h2>Calculations</h2>
       <div class="grid">
         <div class="grid-item">
           <label>Top of Funnel Total Accounts:</label>
-          <div id="topOfFunnel" class="result-box">250</div>
+          <div id="topOfFunnel" class="result-box">500</div>
         </div>
         
         <div class="grid-item">
-          <label>Express Interest (12%):</label>
-          <div id="expressInterest" class="result-box">30</div>
+          <label>Express Interest (<span id="expressInterestPercentage">12</span>%):</label>
+          <div id="expressInterest" class="result-box">60</div>
         </div>
         
         <div class="grid-item">
           <label>Move to Meeting Rate (85%):</label>
-          <div id="moveToMeeting" class="result-box">26</div>
+          <div id="moveToMeeting" class="result-box">51</div>
         </div>
         
         <div class="grid-item">
           <label>Total Conversations:</label>
-          <div id="totalConversations" class="result-box">26</div>
+          <div id="totalConversations" class="result-box">51</div>
         </div>
       </div>
     </div>
@@ -188,18 +192,18 @@
     <div class="grid">
       <div class="grid-item">
         <label>Expected Revenue:</label>
-        <div id="expectedRevenue" class="result-box font-semibold">$52,000</div>
+        <div id="expectedRevenue" class="result-box font-semibold">$637,500</div>
       </div>
       
       <div class="grid-item">
         <label>Subscription Cost:</label>
-        <div id="subscriptionCost" class="result-box font-semibold">$42,000</div>
+        <div id="subscriptionCost" class="result-box font-semibold">$54,000</div>
       </div>
     </div>
     
     <div class="final-result">
       <label class="result-label">Return on Investment (ROI):</label>
-      <div id="roi" class="roi-box">1.24x</div>
+      <div id="roi" class="roi-box">11.81x</div>
     </div>
   </div>
   
@@ -210,19 +214,28 @@
     // Main calculation function
     function calculate() {
       // Get input values
-      var accountType = document.getElementById('accountType').value;
       var paymentFrequency = document.getElementById('paymentFrequency').value;
       var closeRate = parseFloat(document.getElementById('closeRate').value) || 0;
       var dealSize = parseFloat(document.getElementById('dealSize').value) || 0;
+      var topOfFunnelInput = parseInt(document.getElementById('topOfFunnelInput').value) || 500;
+      var expressInterestRate = parseFloat(document.getElementById('expressInterestRate').value) || 12;
       
-      // Calculate top of funnel accounts
-      var topOfFunnel = 250;
-      if (accountType === 'Scale') {
-        topOfFunnel = 500;
-      }
+      // Ensure values are within allowed ranges
+      if (topOfFunnelInput < 300) topOfFunnelInput = 300;
+      if (topOfFunnelInput > 800) topOfFunnelInput = 800;
       
-      // Calculate express interest (12% of top of funnel)
-      var expressInterest = Math.round(topOfFunnel * 0.12);
+      if (expressInterestRate < 10) expressInterestRate = 10;
+      if (expressInterestRate > 30) expressInterestRate = 30;
+      
+      // Update input fields with validated values
+      document.getElementById('topOfFunnelInput').value = topOfFunnelInput;
+      document.getElementById('expressInterestRate').value = expressInterestRate;
+      
+      // Set top of funnel accounts
+      var topOfFunnel = topOfFunnelInput;
+      
+      // Calculate express interest (using user-defined rate)
+      var expressInterest = Math.round(topOfFunnel * (expressInterestRate / 100));
       
       // Calculate move to meeting rate (85% of express interest)
       var moveToMeeting = Math.round(expressInterest * 0.85);
@@ -233,21 +246,18 @@
       // Calculate expected revenue
       var expectedRevenue = Math.round((totalConversations * closeRate / 100) * dealSize);
       
-      // Determine subscription cost based on selections
-      var subscriptionCost = 42000; // Default: Impact Monthly
+      // Determine subscription cost based on payment frequency
+      var subscriptionCost = 54000; // Default: Monthly (4,500 × 12)
       
-      if (accountType === 'Impact' && paymentFrequency === 'Annually') {
-        subscriptionCost = 35000;
-      } else if (accountType === 'Scale' && paymentFrequency === 'Monthly') {
-        subscriptionCost = 66000;
-      } else if (accountType === 'Scale' && paymentFrequency === 'Annually') {
-        subscriptionCost = 50000;
+      if (paymentFrequency === 'Annually') {
+        subscriptionCost = 45000;
       }
       
       // Calculate ROI
       var roi = expectedRevenue / subscriptionCost;
       
       // Update DOM elements
+      document.getElementById('expressInterestPercentage').textContent = expressInterestRate;
       document.getElementById('topOfFunnel').textContent = topOfFunnel;
       document.getElementById('expressInterest').textContent = expressInterest;
       document.getElementById('moveToMeeting').textContent = moveToMeeting;
@@ -258,4 +268,4 @@
     }
   </script>
 </body>
-</html> 
+</html>
