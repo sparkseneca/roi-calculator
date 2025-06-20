@@ -1,271 +1,675 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Simplified ROI Calculator</title>
-  <style>
-    :root {
-      --accent: #FF5F4E;
-      --text-color: #444;
-      --bg-light: #F9F6F2;
-      --edge: #ECE8E3;
-      --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      --shadow: 0 3px 14px rgba(0,0,0,.05);
-      --radius: 1rem;
-    }
-    
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-    
-    body {
-      font-family: var(--font-family);
-      color: var(--text-color);
-      background-color: transparent;
-      padding: 20px;
-    }
-    
-    .calculator-container {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 2rem;
-      background-color: var(--bg-light);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-    }
-    
-    h2 {
-      font-size: 1.25rem;
-      font-weight: 600;
-      margin-bottom: 1rem;
-      color: var(--text-color);
-      border-bottom: 1px solid var(--edge);
-      padding-bottom: 0.5rem;
-    }
-    
-    .calculation-section {
-      margin-top: 1.5rem;
-      margin-bottom: 1.5rem;
-    }
-    
-    .grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.5rem;
-      margin-bottom: 1.5rem;
-    }
-    
-    .grid-item {
-      display: flex;
-      flex-direction: column;
-    }
-    
-    label {
-      font-weight: 500;
-      margin-bottom: 0.5rem;
-    }
-    
-    select, input, button {
-      padding: 0.75rem;
-      border: 1px solid var(--edge);
-      border-radius: var(--radius);
-      font-family: var(--font-family);
-      color: var(--text-color);
-      background-color: white;
-      margin-bottom: 10px;
-    }
-    
-    button {
-      background-color: var(--accent);
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-      border: none;
-    }
-    
-    .result-box {
-      padding: 0.75rem;
-      background-color: var(--edge);
-      border-radius: var(--radius);
-    }
-    
-    .final-result {
-      border-top: 1px solid var(--edge);
-      padding-top: 1.5rem;
-      margin-top: 0.5rem;
-    }
-    
-    .roi-box {
-      padding: 1rem;
-      background-color: var(--accent);
-      color: white;
-      border-radius: var(--radius);
-      text-align: center;
-      font-size: 1.5rem;
-      font-weight: 700;
-      margin-top: 0.5rem;
-    }
-    
-    .result-label {
-      font-size: 1.25rem;
-      font-weight: 700;
-    }
-    
-    .font-semibold {
-      font-weight: 600;
-    }
-    
-    /* Mobile responsiveness */
-    @media (max-width: 768px) {
-      .grid {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spark Seneca Credit Estimator</title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts for a modern look -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        /* Using the Inter font family */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom scrollbar for a cleaner look */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #94a3b8;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+    </style>
 </head>
-<body>
-  <div class="calculator-container">    
-    <div class="grid">
-      <div class="grid-item">
-        <label for="topOfFunnelInput">Top of Funnel Target Accounts (300-800):</label>
-        <input type="number" id="topOfFunnelInput" min="300" max="800" placeholder="e.g., 500" value="500">
-      </div>
-      
-      <div class="grid-item">
-        <label for="expressInterestRate">Express Interest Rate (10-30%):</label>
-        <input type="number" id="expressInterestRate" min="10" max="30" placeholder="e.g., 12" value="12">
-      </div>
-    </div>
-    
-    <div class="grid">
-      <div class="grid-item">
-        <label for="closeRate">Enter your average close rate (%)</label>
-        <input type="number" id="closeRate" min="0" max="100" placeholder="e.g., 25" value="25">
-      </div>
-      
-      <div class="grid-item">
-        <label for="dealSize">Enter your average deal size ($)</label>
-        <input type="number" id="dealSize" min="0" placeholder="e.g., 35000" value="35000">
-      </div>
-    </div>
-    
-    <div class="grid">
-      <div class="grid-item">
-        <label for="paymentFrequency">Pick your payment option:</label>
-        <select id="paymentFrequency">
-          <option value="Monthly">Monthly</option>
-          <option value="Annually">Annually</option>
-        </select>
-      </div>
-    </div>
-    
-    <button onclick="calculate()">Calculate ROI</button>
-    
-    <div class="calculation-section">
-      <h2>Calculations</h2>
-      <div class="grid">
-        <div class="grid-item">
-          <label>Top of Funnel Total Accounts:</label>
-          <div id="topOfFunnel" class="result-box">500</div>
+<body class="bg-gradient-to-br from-slate-50 to-blue-50">
+
+    <div id="app" class="text-slate-800">
+        <div class="container mx-auto p-4 sm:p-6 lg:p-8">
+            <header class="text-center mb-10">
+                <div class="flex items-center justify-center gap-3 mb-4">
+                    <!-- Calculator Icon SVG -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-600"><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><line x1="16" x2="16" y1="14" y2="18"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/><path d="M12 14h.01"/><path d="M8 14h.01"/><path d="M12 18h.01"/><path d="M8 18h.01"/></svg>
+                    <h1 class="text-4xl sm:text-5xl font-extrabold text-slate-900 tracking-tight">
+                        Spark Seneca Credit Estimator
+                    </h1>
+                </div>
+                <p class="text-lg text-slate-600 mt-3 max-w-3xl mx-auto">
+                    Build your AI transformation package with our comprehensive service catalog. 
+                    Select services, adjust quantities, and get intelligent recommendations.
+                </p>
+            </header>
+
+            <!-- Action Bar -->
+            <div class="flex flex-wrap gap-4 justify-center mb-8">
+                <button id="save-estimate-btn" class="flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                    Save Estimate
+                </button>
+                <button id="export-btn" class="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+                    Export
+                </button>
+                <button id="clear-all-btn" class="flex items-center gap-2 bg-slate-600 text-white px-4 py-2 rounded-lg hover:bg-slate-700 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>
+                    Clear All
+                </button>
+            </div>
+
+            <main class="grid grid-cols-1 xl:grid-cols-4 gap-8">
+                <!-- Left Column: Service Selection & Breakdown -->
+                <div class="xl:col-span-2 space-y-6">
+                    <div class="bg-white p-6 rounded-xl shadow-lg">
+                        <div class="flex items-center justify-between mb-4">
+                            <h2 class="text-xl font-bold text-slate-900">Select Services</h2>
+                            <input type="text" id="search-input" placeholder="Search services..." class="w-64 p-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm">
+                        </div>
+                        <div id="service-rows" class="space-y-4">
+                            <!-- Service rows will be dynamically inserted here -->
+                        </div>
+                        <button id="add-service-btn" class="mt-4 w-full flex items-center justify-center gap-2 bg-blue-600 text-white font-semibold py-3 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all">
+                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" x2="12" y1="5" y2="19"/><line x1="5" x2="19" y1="12" y2="12"/></svg>
+                            Add Service
+                        </button>
+                    </div>
+
+                    <div id="category-stats-container" class="bg-white p-6 rounded-xl shadow-lg hidden">
+                        <h3 class="text-xl font-bold text-slate-900 mb-4">Category Breakdown</h3>
+                        <div id="category-stats" class="space-y-3"></div>
+                    </div>
+                </div>
+
+                <!-- Middle Column: Detailed Breakdown -->
+                <div class="space-y-6">
+                    <div class="bg-white p-6 rounded-xl shadow-lg">
+                        <h3 class="text-xl font-bold text-slate-900 mb-4">Detailed Breakdown</h3>
+                        <div id="detailed-breakdown" class="space-y-3 max-h-96 overflow-y-auto custom-scrollbar">
+                            <!-- Detailed items will be inserted here -->
+                        </div>
+                    </div>
+                    <div id="saved-estimates-container" class="bg-white p-6 rounded-xl shadow-lg hidden">
+                        <h3 class="text-xl font-bold text-slate-900 mb-4">Saved Estimates</h3>
+                        <div id="saved-estimates-list" class="space-y-2 max-h-64 overflow-y-auto custom-scrollbar"></div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Summary & Recommendations -->
+                <div class="space-y-6">
+                    <div id="summary-panel" class="bg-white p-6 rounded-xl shadow-lg sticky top-8">
+                        <h2 class="text-xl font-bold text-slate-900 mb-6 text-center">Your Estimate</h2>
+                        <div class="text-center mb-6">
+                            <div class="text-sm text-slate-600 mb-2">Total Credits Needed</div>
+                            <div id="total-credits" class="text-4xl font-extrabold text-blue-600">0.00</div>
+                        </div>
+                        <div id="recommendations">
+                            <!-- Recommendations will be inserted here -->
+                        </div>
+                    </div>
+                </div>
+            </main>
+            
+            <footer class="text-center p-6 mt-8 bg-white border-t border-slate-200">
+                <div class="max-w-4xl mx-auto">
+                    <div class="flex items-center justify-center gap-2 mb-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-slate-400"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>
+                        <span class="text-sm font-medium text-slate-600">Important Disclaimer</span>
+                    </div>
+                    <p class="text-xs text-slate-500 leading-relaxed">
+                        This calculator provides estimates for planning purposes only. Recommended credit packs and total costs 
+                        are based on your selected services and quantities. Actual implementation costs may vary based on 
+                        complexity, timeline, and specific requirements. Please consult with our team for a detailed proposal 
+                        and formal quote tailored to your organization's needs.
+                    </p>
+                </div>
+            </footer>
         </div>
+
+        <!-- Save Modal -->
+        <div id="save-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden">
+            <div class="bg-white rounded-xl p-6 w-full max-w-md">
+                <h3 class="text-lg font-bold text-slate-900 mb-4">Save Estimate</h3>
+                <input type="text" id="estimate-name-input" placeholder="Enter estimate name..." class="w-full p-3 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent mb-4">
+                <div class="flex gap-3 justify-end">
+                    <button id="cancel-save-btn" class="px-4 py-2 text-slate-600 hover:text-slate-800 transition-colors">Cancel</button>
+                    <button id="confirm-save-btn" disabled class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
         
-        <div class="grid-item">
-          <label>Express Interest (<span id="expressInterestPercentage">12</span>%):</label>
-          <div id="expressInterest" class="result-box">60</div>
-        </div>
+        // --- Data ---
+        const servicesData = [
+            { name: 'Company Wide AI Acceptable Use Policy', unit: 'Policy', credits: 25.00, category: 'Governance', description: 'Comprehensive AI policy framework for entire organization' },
+            { name: 'Team/Function AI Acceptable Use Policy', unit: 'Policy', credits: 5.00, category: 'Governance', description: 'Targeted AI policy for specific teams or functions' },
+            { name: 'AI Risk Assessment', unit: 'Assessment', credits: 75.00, category: 'Assessment', description: 'Comprehensive evaluation of AI implementation risks' },
+            { name: 'Prompt Management System', unit: 'System', credits: 20.00, category: 'Tools', description: 'Centralized system for managing AI prompts' },
+            { name: 'Custom Prompts', unit: 'Prompt', credits: 2.00, category: 'Development', description: 'Tailored prompts for specific use cases' },
+            { name: 'Recorded Walkthrough', unit: 'Walkthrough', credits: 2.00, category: 'Training', description: 'Step-by-step video guidance for processes' },
+            { name: 'AI Workflow Creation', unit: 'Workflow', credits: 10.00, category: 'Development', description: 'Custom AI-powered workflow design' },
+            { name: 'AI Tool Proof of Concept', unit: 'Tool', credits: 20.00, category: 'Development', description: 'Prototype development for AI tool validation' },
+            { name: 'Custom GPT', unit: 'GPT', credits: 8.00, category: 'Development', description: 'Specialized GPT model for specific needs' },
+            { name: 'Tool Integration', unit: 'Tool', credits: 25.00, category: 'Implementation', description: 'Integration of AI tools with existing systems' },
+            { name: 'Tool Set Up', unit: 'Tool', credits: 10.00, category: 'Implementation', description: 'Initial configuration and setup of AI tools' },
+            { name: 'Prompt Refinement', unit: 'Prompt', credits: 1.50, category: 'Optimization', description: 'Enhancement of existing prompts for better results' },
+            { name: 'GPT Refinement', unit: 'GPT', credits: 2.50, category: 'Optimization', description: 'Improvement of custom GPT performance' },
+            { name: 'Key User Working Group', unit: 'Member', credits: 5.00, category: 'Collaboration', description: 'Facilitated group sessions with key stakeholders' },
+            { name: 'AI Fit Assessment', unit: 'Workflow', credits: 10.00, category: 'Assessment', description: 'Evaluation of AI suitability for specific workflows' },
+            { name: 'Tool Selection & Comparison', unit: 'Tool', credits: 20.00, category: 'Consulting', description: 'Analysis and comparison of available AI tools' },
+            { name: 'AI Brainstorming Small Group', unit: 'Session', credits: 10.00, category: 'Workshops', description: 'Collaborative ideation sessions for AI applications' },
+            { name: 'AI Executive Planning Session', unit: 'Session', credits: 30.00, category: 'Workshops', description: 'Strategic planning sessions for leadership' },
+            { name: 'Monthly ROI Review', unit: 'Use Case', credits: 5.00, category: 'Monitoring', description: 'Regular assessment of AI implementation returns' },
+            { name: 'AI Maturity Map', unit: 'Team Member', credits: 5.00, category: 'Assessment', description: 'Assessment of AI readiness and maturity levels' },
+            { name: 'What Tool for What? Cheatsheet', unit: 'Tool', credits: 1.00, category: 'Resources', description: 'Quick reference guide for tool selection' },
+            { name: 'AI Tutorials', unit: 'Tutorial', credits: 2.00, category: 'Training', description: 'Educational content for AI skill development' },
+            { name: 'AI Q&A Support', unit: 'Response', credits: 1.00, category: 'Support', description: 'Ongoing support for AI-related questions' },
+            { name: '1:1 Working Session', unit: 'Session', credits: 10.00, category: 'Consulting', description: 'Personalized one-on-one guidance sessions' },
+            { name: 'Prompting Workshop', unit: 'Session', credits: 80.00, category: 'Workshops', description: 'Comprehensive training on effective prompting' },
+            { name: 'AMA Session (Full Company)', unit: 'Session', credits: 50.00, category: 'Workshops', description: 'Company-wide Q&A session on AI topics' },
+            { name: 'Function or Technique Specific Workshop', unit: 'Session', credits: 80.00, category: 'Workshops', description: 'Specialized training for specific functions' },
+            { name: 'Business Wide AI Fundamentals', unit: 'Session', credits: 80.00, category: 'Training', description: 'Organization-wide AI education program' },
+            { name: 'Simple Workflow Rewrite', unit: 'Workflow', credits: 12.50, category: 'Optimization', description: 'Basic workflow optimization with AI integration' },
+            { name: 'Complex Workflow Rewrite', unit: 'Workflow', credits: 25.00, category: 'Optimization', description: 'Advanced workflow transformation with AI' },
+            { name: 'Walkthrough a New Workflow', unit: 'Workflow', credits: 5.00, category: 'Training', description: 'Guided introduction to new AI workflows' }
+        ];
+
+        const creditPacks = [
+            { size: 100, price: 5000, savings: 0, popular: false },
+            { size: 250, price: 11250, savings: 10, popular: true },
+            { size: 500, price: 20000, savings: 20, popular: false },
+            { size: 1000, price: 35000, savings: 30, popular: false } 
+        ];
+
+        // --- Application State ---
+        let state = {
+            selectedServices: [{ id: Date.now(), service: '', quantity: 1 }],
+            searchTerm: '',
+            savedEstimates: []
+        };
+
+        // --- DOM Elements ---
+        const serviceRowsContainer = document.getElementById('service-rows');
+        const addServiceBtn = document.getElementById('add-service-btn');
+        const searchInput = document.getElementById('search-input');
+        const totalCreditsEl = document.getElementById('total-credits');
+        const recommendationsEl = document.getElementById('recommendations');
+        const detailedBreakdownEl = document.getElementById('detailed-breakdown');
+        const categoryStatsContainer = document.getElementById('category-stats-container');
+        const categoryStatsEl = document.getElementById('category-stats');
+        const clearAllBtn = document.getElementById('clear-all-btn');
+        const exportBtn = document.getElementById('export-btn');
+        const saveEstimateBtn = document.getElementById('save-estimate-btn');
+        const saveModal = document.getElementById('save-modal');
+        const estimateNameInput = document.getElementById('estimate-name-input');
+        const cancelSaveBtn = document.getElementById('cancel-save-btn');
+        const confirmSaveBtn = document.getElementById('confirm-save-btn');
+        const savedEstimatesContainer = document.getElementById('saved-estimates-container');
+        const savedEstimatesListEl = document.getElementById('saved-estimates-list');
+
+        // --- Core Functions ---
         
-        <div class="grid-item">
-          <label>Move to Meeting Rate (85%):</label>
-          <div id="moveToMeeting" class="result-box">51</div>
-        </div>
+        function render() {
+            renderServiceRows();
+            const totalCredits = calculateTotalCredits();
+            const recommended = calculateRecommendedPacks(totalCredits);
+            
+            totalCreditsEl.textContent = totalCredits.toFixed(2);
+            renderRecommendations(recommended, totalCredits);
+            renderDetailedBreakdown();
+            renderCategoryStats();
+            renderSavedEstimates();
+
+            const hasItems = state.selectedServices.some(s => s.service && s.quantity > 0);
+            exportBtn.disabled = !hasItems;
+            saveEstimateBtn.disabled = !hasItems;
+        }
+
+        function renderServiceRows() {
+            serviceRowsContainer.innerHTML = '';
+            const baseFilteredServices = getFilteredServices();
+
+            state.selectedServices.forEach(row => {
+                const rowEl = document.createElement('div');
+                rowEl.className = 'grid grid-cols-1 md:grid-cols-[1fr,auto,auto,auto] gap-3 items-start';
+                rowEl.dataset.id = row.id;
+
+                const optionsForThisRow = [...baseFilteredServices];
+                const selectedServiceDetails = servicesData.find(s => s.name === row.service);
+
+                if (row.service && selectedServiceDetails && !optionsForThisRow.some(s => s.name === row.service)) {
+                    optionsForThisRow.push(selectedServiceDetails);
+                    optionsForThisRow.sort((a, b) => a.name.localeCompare(b.name));
+                }
+
+                const serviceDetailsForDescription = servicesData.find(s => s.name === row.service);
+
+                rowEl.innerHTML = `
+                    <div class="space-y-2">
+                        <select class="service-select w-full p-3 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <option value="">-- Select a Service --</option>
+                            ${optionsForThisRow.map(service => `
+                                <option value="${service.name}" ${row.service === service.name ? 'selected' : ''}>
+                                    ${service.name} (${service.credits} credits per ${service.unit})
+                                </option>
+                            `).join('')}
+                        </select>
+                        ${row.service && serviceDetailsForDescription ? `
+                            <div class="text-xs text-slate-600 bg-slate-50 p-2 rounded">
+                               ${serviceDetailsForDescription.description}
+                            </div>
+                        ` : ''}
+                    </div>
+                    <input type="number" min="1" value="${row.quantity}" class="quantity-input w-20 p-3 bg-slate-50 border border-slate-200 rounded-lg text-center focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    <button title="Duplicate" class="duplicate-btn p-3 text-slate-400 hover:text-blue-500 hover:bg-blue-50 rounded-lg transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" x2="12" y1="22.08" y2="12"/></svg>
+                    </button>
+                    ${state.selectedServices.length > 1 ? `
+                    <button title="Remove" class="remove-btn p-3 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>
+                    </button>
+                    ` : '<div class="w-12 h-12"></div>'}
+                `;
+                serviceRowsContainer.appendChild(rowEl);
+            });
+        }
         
-        <div class="grid-item">
-          <label>Total Conversations:</label>
-          <div id="totalConversations" class="result-box">51</div>
-        </div>
-      </div>
-    </div>
-    
-    <div class="grid">
-      <div class="grid-item">
-        <label>Expected Revenue:</label>
-        <div id="expectedRevenue" class="result-box font-semibold">$637,500</div>
-      </div>
-      
-      <div class="grid-item">
-        <label>Subscription Cost:</label>
-        <div id="subscriptionCost" class="result-box font-semibold">$54,000</div>
-      </div>
-    </div>
-    
-    <div class="final-result">
-      <label class="result-label">Return on Investment (ROI):</label>
-      <div id="roi" class="roi-box">11.81x</div>
-    </div>
-  </div>
-  
-  <script>
-    // Initial calculation on page load
-    calculate();
-    
-    // Main calculation function
-    function calculate() {
-      // Get input values
-      var paymentFrequency = document.getElementById('paymentFrequency').value;
-      var closeRate = parseFloat(document.getElementById('closeRate').value) || 0;
-      var dealSize = parseFloat(document.getElementById('dealSize').value) || 0;
-      var topOfFunnelInput = parseInt(document.getElementById('topOfFunnelInput').value) || 500;
-      var expressInterestRate = parseFloat(document.getElementById('expressInterestRate').value) || 12;
-      
-      // Ensure values are within allowed ranges
-      if (topOfFunnelInput < 300) topOfFunnelInput = 300;
-      if (topOfFunnelInput > 800) topOfFunnelInput = 800;
-      
-      if (expressInterestRate < 10) expressInterestRate = 10;
-      if (expressInterestRate > 30) expressInterestRate = 30;
-      
-      // Update input fields with validated values
-      document.getElementById('topOfFunnelInput').value = topOfFunnelInput;
-      document.getElementById('expressInterestRate').value = expressInterestRate;
-      
-      // Set top of funnel accounts
-      var topOfFunnel = topOfFunnelInput;
-      
-      // Calculate express interest (using user-defined rate)
-      var expressInterest = Math.round(topOfFunnel * (expressInterestRate / 100));
-      
-      // Calculate move to meeting rate (85% of express interest)
-      var moveToMeeting = Math.round(expressInterest * 0.85);
-      
-      // Set total conversations
-      var totalConversations = moveToMeeting;
-      
-      // Calculate expected revenue
-      var expectedRevenue = Math.round((totalConversations * closeRate / 100) * dealSize);
-      
-      // Determine subscription cost based on payment frequency
-      var subscriptionCost = 54000; // Default: Monthly (4,500 × 12)
-      
-      if (paymentFrequency === 'Annually') {
-        subscriptionCost = 45000;
-      }
-      
-      // Calculate ROI
-      var roi = expectedRevenue / subscriptionCost;
-      
-      // Update DOM elements
-      document.getElementById('expressInterestPercentage').textContent = expressInterestRate;
-      document.getElementById('topOfFunnel').textContent = topOfFunnel;
-      document.getElementById('expressInterest').textContent = expressInterest;
-      document.getElementById('moveToMeeting').textContent = moveToMeeting;
-      document.getElementById('totalConversations').textContent = totalConversations;
-      document.getElementById('expectedRevenue').textContent = '$' + expectedRevenue.toLocaleString();
-      document.getElementById('subscriptionCost').textContent = '$' + subscriptionCost.toLocaleString();
-      document.getElementById('roi').textContent = roi.toFixed(2) + 'x';
-    }
-  </script>
+        function renderRecommendations(recommended, totalCredits) {
+            if (totalCredits === 0) {
+                recommendationsEl.innerHTML = `
+                    <div class="text-center py-8 text-slate-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-auto mb-3 text-slate-300"><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg>
+                        <p>Select services to see recommendations</p>
+                    </div>`;
+                return;
+            }
+
+            recommendationsEl.innerHTML = `
+                <div class="space-y-4">
+                    <div class="bg-gradient-to-r from-blue-50 to-green-50 p-4 rounded-lg border border-blue-200">
+                        <div class="flex items-center gap-2 mb-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-600"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                            <span class="font-semibold text-slate-800">Recommended Package</span>
+                        </div>
+                        <div class="space-y-2">
+                            ${recommended.packs.map(pack => `
+                                <div class="flex justify-between items-center">
+                                    <span class="font-bold text-slate-900">${pack.count}x ${pack.size.toLocaleString()} Credit Pack</span>
+                                    <span class="font-semibold text-slate-700">$${(pack.price * pack.count).toLocaleString()}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    <div class="bg-green-50 border-2 border-green-200 p-4 rounded-lg text-center">
+                        <div class="text-sm text-green-800 mb-1">Total Investment</div>
+                        <div class="text-3xl font-extrabold text-green-700">$${recommended.totalCost.toLocaleString()}</div>
+                    </div>
+                    <div class="space-y-2 pt-4">
+                        <h4 class="font-semibold text-slate-700 text-sm">All Available Packs</h4>
+                        ${creditPacks.map(pack => `
+                            <div class="flex justify-between items-center text-sm p-2 bg-slate-50 rounded">
+                                <span>${pack.size.toLocaleString()} credits</span>
+                                <span class="font-semibold">$${pack.price.toLocaleString()}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>`;
+        }
+
+        function renderDetailedBreakdown() {
+            detailedBreakdownEl.innerHTML = '';
+            const validServices = state.selectedServices.filter(s => s.service && s.quantity > 0);
+
+            if (validServices.length === 0) {
+                detailedBreakdownEl.innerHTML = `
+                    <div class="text-center py-8 text-slate-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-auto mb-3 text-slate-300"><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><line x1="16" x2="16" y1="14" y2="18"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/><path d="M12 14h.01"/><path d="M8 14h.01"/><path d="M12 18h.01"/><path d="M8 18h.01"/></svg>
+                        <p>Your detailed breakdown will appear here.</p>
+                    </div>`;
+                return;
+            }
+
+            validServices.forEach(selected => {
+                const serviceDetails = servicesData.find(s => s.name === selected.service);
+                if (!serviceDetails) return;
+                const lineItemTotal = serviceDetails.credits * selected.quantity;
+
+                const itemEl = document.createElement('div');
+                itemEl.className = 'p-3 bg-slate-50 rounded-lg';
+                itemEl.innerHTML = `
+                    <div class="flex justify-between items-start mb-1">
+                        <div class="flex-1">
+                            <div class="font-semibold text-slate-900">${selected.quantity}x ${serviceDetails.name}</div>
+                            <div class="text-xs text-slate-600">${serviceDetails.credits} credits per ${serviceDetails.unit}</div>
+                        </div>
+                        <div class="text-right">
+                            <div class="font-bold text-blue-600">${lineItemTotal.toFixed(2)}</div>
+                            <div class="text-xs text-slate-500">${serviceDetails.category}</div>
+                        </div>
+                    </div>`;
+                detailedBreakdownEl.appendChild(itemEl);
+            });
+        }
+
+        function renderCategoryStats() {
+            const stats = {};
+            state.selectedServices.forEach(selected => {
+                if (selected.service && selected.quantity > 0) {
+                    const service = servicesData.find(s => s.name === selected.service);
+                    if (service) {
+                        const category = service.category;
+                        if (!stats[category]) {
+                            stats[category] = { credits: 0, count: 0 };
+                        }
+                        stats[category].credits += service.credits * selected.quantity;
+                        stats[category].count += selected.quantity;
+                    }
+                }
+            });
+
+            if (Object.keys(stats).length === 0) {
+                categoryStatsContainer.classList.add('hidden');
+                return;
+            }
+
+            categoryStatsContainer.classList.remove('hidden');
+            categoryStatsEl.innerHTML = '';
+            Object.entries(stats).forEach(([category, data]) => {
+                const statEl = document.createElement('div');
+                statEl.className = 'flex justify-between items-center p-3 bg-slate-50 rounded-lg';
+                statEl.innerHTML = `
+                    <div>
+                        <span class="font-semibold text-slate-900">${category}</span>
+                        <span class="text-sm text-slate-600 ml-2">(${data.count} items)</span>
+                    </div>
+                    <span class="font-bold text-blue-600">${data.credits.toFixed(2)} credits</span>
+                `;
+                categoryStatsEl.appendChild(statEl);
+            });
+        }
+        
+        function renderSavedEstimates() {
+            if (state.savedEstimates.length === 0) {
+                savedEstimatesContainer.classList.add('hidden');
+                return;
+            }
+            savedEstimatesContainer.classList.remove('hidden');
+            savedEstimatesListEl.innerHTML = '';
+
+            state.savedEstimates.forEach(estimate => {
+                const estimateEl = document.createElement('div');
+                estimateEl.className = 'flex items-center justify-between p-3 bg-slate-50 rounded-lg';
+                estimateEl.dataset.id = estimate.id;
+                estimateEl.innerHTML = `
+                    <div class="flex-1">
+                        <div class="font-semibold text-slate-900">${estimate.name}</div>
+                        <div class="text-xs text-slate-600">
+                            ${estimate.totalCredits.toFixed(2)} credits • $${estimate.totalCost.toLocaleString()}
+                        </div>
+                    </div>
+                    <div class="flex gap-2">
+                        <button class="load-estimate-btn text-blue-600 hover:text-blue-700 text-sm font-medium">Load</button>
+                        <button class="delete-estimate-btn text-red-600 hover:text-red-700 text-sm font-medium">Delete</button>
+                    </div>
+                `;
+                savedEstimatesListEl.appendChild(estimateEl);
+            });
+        }
+        
+        // --- Calculation Functions ---
+
+        function getFilteredServices() {
+            if (!state.searchTerm) {
+                return servicesData;
+            }
+            return servicesData.filter(service =>
+                service.name.toLowerCase().includes(state.searchTerm.toLowerCase()) ||
+                service.description.toLowerCase().includes(state.searchTerm.toLowerCase())
+            );
+        }
+        
+        function calculateTotalCredits() {
+            return state.selectedServices.reduce((total, selected) => {
+                const service = servicesData.find(s => s.name === selected.service);
+                const quantity = selected.quantity > 0 ? selected.quantity : 0;
+                return total + (service ? service.credits * quantity : 0);
+            }, 0);
+        }
+
+        function calculateRecommendedPacks(totalCredits) {
+            if (totalCredits <= 0) {
+                return { packs: [], totalCost: 0, creditsRemaining: 0 };
+            }
+
+            let bestCombination = [];
+            let lowestCost = Infinity;
+
+            const pack100Limit = Math.ceil(totalCredits / 100) + 2;
+            const pack250Limit = Math.ceil(totalCredits / 250) + 1;
+            const pack500Limit = Math.ceil(totalCredits / 500) + 1;
+            const pack1000Limit = Math.ceil(totalCredits / 1000) + 1;
+
+            for (let p1000 = 0; p1000 <= pack1000Limit; p1000++) {
+                for (let p500 = 0; p500 <= pack500Limit; p500++) {
+                    for (let p250 = 0; p250 <= pack250Limit; p250++) {
+                        for (let p100 = 0; p100 <= pack100Limit; p100++) {
+                            const creditsProvided = (p1000 * 1000) + (p500 * 500) + (p250 * 250) + (p100 * 100);
+                            
+                            if (creditsProvided >= totalCredits) {
+                                const totalCost = (p1000 * 35000) + (p500 * 20000) + (p250 * 11250) + (p100 * 5000);
+
+                                if (totalCost < lowestCost) {
+                                    lowestCost = totalCost;
+                                    bestCombination = [];
+                                    if (p1000 > 0) bestCombination.push({ ...creditPacks[3], count: p1000 });
+                                    if (p500 > 0) bestCombination.push({ ...creditPacks[2], count: p500 });
+                                    if (p250 > 0) bestCombination.push({ ...creditPacks[1], count: p250 });
+                                    if (p100 > 0) bestCombination.push({ ...creditPacks[0], count: p100 });
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
+            const totalCreditsProvided = bestCombination.reduce((sum, pack) => sum + (pack.size * pack.count), 0);
+            
+            return {
+                packs: bestCombination,
+                totalCost: lowestCost,
+                creditsRemaining: totalCreditsProvided - totalCredits
+            };
+        }
+
+        // --- Event Handlers ---
+
+        function handleServiceChange(id, field, value) {
+            const index = state.selectedServices.findIndex(s => s.id == id);
+            if (index !== -1) {
+                state.selectedServices[index][field] = value;
+                render();
+            }
+        }
+        
+        function addServiceRow() {
+            state.selectedServices.push({ id: Date.now(), service: '', quantity: 1 });
+            render();
+        }
+
+        function removeServiceRow(id) {
+            state.selectedServices = state.selectedServices.filter(s => s.id != id);
+            render();
+        }
+        
+        function duplicateServiceRow(id) {
+            const serviceToDuplicate = state.selectedServices.find(s => s.id == id);
+            if (serviceToDuplicate) {
+                 const newRow = { ...serviceToDuplicate, id: Date.now() };
+                 state.selectedServices.push(newRow);
+            }
+            render();
+        }
+        
+        function clearAllServices() {
+            state.selectedServices = [{ id: Date.now(), service: '', quantity: 1 }];
+            render();
+        }
+
+        function exportEstimate() {
+            const totalCredits = calculateTotalCredits();
+            const recommendedPacks = calculateRecommendedPacks(totalCredits);
+            const data = {
+                services: state.selectedServices.filter(s => s.service),
+                totalCredits,
+                recommendedPacks,
+                exportDate: new Date().toISOString()
+            };
+            
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `spark-seneca-estimate-${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function saveEstimate() {
+            const estimateName = estimateNameInput.value.trim();
+            if (!estimateName) return;
+            
+            const totalCredits = calculateTotalCredits();
+            const recommendedPacks = calculateRecommendedPacks(totalCredits);
+
+            const estimate = {
+                id: Date.now(),
+                name: estimateName,
+                services: JSON.parse(JSON.stringify(state.selectedServices)),
+                totalCredits,
+                totalCost: recommendedPacks.totalCost,
+                createdAt: new Date().toISOString()
+            };
+            
+            state.savedEstimates.push(estimate);
+            localStorage.setItem('spark-seneca-estimates', JSON.stringify(state.savedEstimates));
+            closeSaveModal();
+            render();
+        }
+        
+        function loadEstimate(id) {
+            const estimate = state.savedEstimates.find(e => e.id == id);
+            if (estimate) {
+                state.selectedServices = JSON.parse(JSON.stringify(estimate.services));
+                render();
+            }
+        }
+        
+        function deleteEstimate(id) {
+            state.savedEstimates = state.savedEstimates.filter(e => e.id != id);
+            localStorage.setItem('spark-seneca-estimates', JSON.stringify(state.savedEstimates));
+            render();
+        }
+        
+        function openSaveModal() {
+            estimateNameInput.value = '';
+            confirmSaveBtn.disabled = true;
+            saveModal.classList.remove('hidden');
+            estimateNameInput.focus();
+        }
+        
+        function closeSaveModal() {
+            saveModal.classList.add('hidden');
+        }
+
+        // --- Event Listeners ---
+        
+        addServiceBtn.addEventListener('click', addServiceRow);
+        clearAllBtn.addEventListener('click', clearAllServices);
+        exportBtn.addEventListener('click', exportEstimate);
+        saveEstimateBtn.addEventListener('click', openSaveModal);
+        cancelSaveBtn.addEventListener('click', closeSaveModal);
+        confirmSaveBtn.addEventListener('click', saveEstimate);
+        
+        estimateNameInput.addEventListener('input', () => {
+            confirmSaveBtn.disabled = !estimateNameInput.value.trim();
+        });
+
+        searchInput.addEventListener('input', e => {
+            state.searchTerm = e.target.value;
+            renderServiceRows();
+        });
+
+        serviceRowsContainer.addEventListener('change', e => {
+            const row = e.target.closest('[data-id]');
+            if (!row) return;
+            const id = row.dataset.id;
+            if (e.target.classList.contains('service-select')) {
+                handleServiceChange(id, 'service', e.target.value);
+            } else if (e.target.classList.contains('quantity-input')) {
+                handleServiceChange(id, 'quantity', parseFloat(e.target.value) || 1);
+            }
+        });
+        
+        serviceRowsContainer.addEventListener('click', e => {
+            const button = e.target.closest('button');
+            if (!button) return;
+            const row = button.closest('[data-id]');
+            if (!row) return;
+            const id = row.dataset.id;
+
+            if (button.classList.contains('remove-btn')) {
+                removeServiceRow(id);
+            } else if (button.classList.contains('duplicate-btn')) {
+                duplicateServiceRow(id);
+            }
+        });
+        
+        savedEstimatesListEl.addEventListener('click', e => {
+            const button = e.target.closest('button');
+            if (!button) return;
+            const estimateEl = button.closest('[data-id]');
+            if (!estimateEl) return;
+            const id = estimateEl.dataset.id;
+
+            if (button.classList.contains('load-estimate-btn')) {
+                loadEstimate(id);
+            } else if (button.classList.contains('delete-estimate-btn')) {
+                deleteEstimate(id);
+            }
+        });
+
+        // --- Initialization ---
+        // --- Start of Fix: Robust localStorage parsing ---
+        // This 'try...catch' block prevents the app from crashing if the data
+        // in localStorage is corrupted or in an unexpected format.
+        try {
+            const savedJSON = localStorage.getItem('spark-seneca-estimates');
+            if (savedJSON) {
+                state.savedEstimates = JSON.parse(savedJSON);
+            }
+        } catch (error) {
+            console.error("Could not parse saved estimates from localStorage:", error);
+            // If parsing fails, we clear the corrupted data to allow the app to start fresh.
+            localStorage.removeItem('spark-seneca-estimates');
+            state.savedEstimates = [];
+        }
+        // --- End of Fix ---
+        
+        render();
+        
+    });
+    </script>
 </body>
 </html>
