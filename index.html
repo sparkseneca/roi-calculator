@@ -8,9 +8,6 @@
     <!-- Tailwind CSS for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- html2canvas for screenshot functionality -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -41,6 +38,16 @@
         }
         .btn-primary:hover {
             background-color: #0058e6;
+        }
+
+        /* Secondary button for 'Schedule a Call' */
+        .btn-secondary {
+            background-color: #eef2ff;
+            color: #0B66FF;
+            transition: background-color 0.3s ease;
+        }
+        .btn-secondary:hover {
+            background-color: #e0e7ff;
         }
         
         /* Custom checkbox style */
@@ -78,6 +85,8 @@
 
     <div id="estimator-root">
         <header class="text-center mb-12">
+            <!-- Logo Added -->
+            <img src="spark_seneca_white_bg.jpg" alt="Spark Seneca Logo" class="h-24 w-24 mx-auto mb-6">
             <h1 class="text-4xl sm:text-5xl font-bold tracking-tight" style="color: #1a1a1a;">
                 How to Use Your Credits
             </h1>
@@ -96,21 +105,30 @@
             <!-- Summary Column -->
             <div class="lg:sticky top-8">
                 <div id="summary-panel" class="themed-card p-6 md:p-8">
-                    <h2 class="text-2xl font-bold text-center mb-4" style="color: #1a1a1a;">Your Estimate</h2>
-                    <div class="text-center mb-6">
-                        <div class="text-sm uppercase tracking-wider mb-2" style="color: #4b5563;">Total Credits</div>
-                        <div id="total-credits" class="text-5xl font-extrabold" style="color: #0B66FF;">0.00</div>
+                     <!-- Prominent 'Schedule a Call' Button moved to the top -->
+                    <a href="https://calendly.com/jimcusick/call-w-jim" target="_blank" class="w-full flex items-center justify-center gap-2 font-semibold py-3 px-4 rounded-lg btn-secondary mb-6">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" x2="16" y1="2" y2="6"></line><line x1="8" x2="8" y1="2" y2="6"></line><line x1="3" x2="21" y1="10" y2="10"></line></svg>
+                        Schedule a Call
+                    </a>
+
+                    <div class="border-t border-slate-200 pt-6">
+                        <h2 class="text-2xl font-bold text-center mb-4" style="color: #1a1a1a;">Your Estimate</h2>
+                        
+                        <div class="text-center mb-6">
+                            <div class="text-sm uppercase tracking-wider mb-2" style="color: #4b5563;">Total Credits</div>
+                            <div id="total-credits" class="text-5xl font-extrabold" style="color: #0B66FF;">0.00</div>
+                        </div>
+                        
+                        <div id="recommendations" class="mb-6 space-y-4">
+                            <!-- Recommendations will be inserted here -->
+                        </div>
+                        
+                        <button id="download-btn" class="w-full flex items-center justify-center gap-2 font-semibold py-3 px-4 rounded-lg btn-primary disabled:opacity-50 disabled:cursor-not-allowed">
+                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                            Download Report
+                        </button>
+                        <button id="reset-btn" class="w-full text-center text-sm text-slate-500 hover:text-slate-800 mt-4 transition-colors">Reset Selections</button>
                     </div>
-                    
-                    <div id="recommendations" class="mb-6 space-y-4">
-                        <!-- Recommendations will be inserted here -->
-                    </div>
-                    
-                    <button id="download-btn" class="w-full flex items-center justify-center gap-2 font-semibold py-3 px-4 rounded-lg btn-primary disabled:opacity-50 disabled:cursor-not-allowed">
-                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                        Download Estimate as Image
-                    </button>
-                    <button id="reset-btn" class="w-full text-center text-sm text-slate-500 hover:text-slate-800 mt-4 transition-colors">Reset Selections</button>
                 </div>
             </div>
         </main>
@@ -161,6 +179,12 @@
             { size: 500, price: 20000 }, { size: 1000, price: 35000 } 
         ];
 
+        // --- Start of Fix: Embed logo data directly ---
+        // This Base64 string contains the logo image data. This removes the need for a separate network request (fetch)
+        // which was causing the error. The image is now part of the script.
+        const logoBase64Data = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAEgASADASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1fBICMnFCNhUnGBkaGiscHR4fAlM1JyggdhshNjM5IkJSokNEg8YWBkaKCgpOkxCoykpNjZCQ1JjZ2CoomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6g4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tbe4uLm6wsPExcbHyMnK0tPU1dbX2Nna4eLj5OXm5+jp6vHy8/T19vf4+fr/xAAfAQADAQEBAQEBAQEBAAAAAAAAAQIDBAQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1VWV1hZWmNkZWZnaGlqc3R1dnd4eXqCg4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tbe4uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD6pooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigA//Z';
+        // --- End of Fix ---
+
         let state = { selectedServices: {} }; // E.g., { "Service Name": quantity }
 
         const categoriesContainer = document.getElementById('categories-container');
@@ -168,7 +192,6 @@
         const recommendationsEl = document.getElementById('recommendations');
         const downloadBtn = document.getElementById('download-btn');
         const resetBtn = document.getElementById('reset-btn');
-        const estimatorRoot = document.getElementById('estimator-root');
 
         const categories = [...new Set(servicesData.map(s => s.displayCategory))];
 
@@ -249,7 +272,6 @@
             if (totalCredits <= 0) return { packs: [], totalCost: 0 };
             let bestCombination = [];
             let lowestCost = Infinity;
-            const maxPacks = Math.ceil(totalCredits / creditPacks[0].size) + 1;
 
             function find(target, currentPacks, cost) {
                 if (cost >= lowestCost) return;
@@ -302,23 +324,113 @@
             render();
         }
         
-        function handleScreenshot() {
-            const btn = this;
-            const originalText = btn.innerHTML;
-            btn.innerHTML = 'Generating...';
-            btn.disabled = true;
+        function handleDownloadReport() {
+            const totalCredits = calculateTotalCredits();
+            const recommended = calculateRecommendedPacks(totalCredits);
 
-            html2canvas(estimatorRoot, {
-                backgroundColor: '#f8faff', // Match body background
-                scale: 1.5 // Higher resolution
-            }).then(canvas => {
-                const link = document.createElement('a');
-                link.download = 'spark-seneca-estimate.png';
-                link.href = canvas.toDataURL('image/png');
-                link.click();
-                btn.innerHTML = originalText;
-                btn.disabled = false;
-            });
+            const selectedByCategory = Object.entries(state.selectedServices).reduce((acc, [serviceName, quantity]) => {
+                const service = servicesData.find(s => s.name === serviceName);
+                if (service) {
+                    if (!acc[service.displayCategory]) { acc[service.displayCategory] = []; }
+                    acc[service.displayCategory].push({ ...service, quantity });
+                }
+                return acc;
+            }, {});
+
+            // --- Start of Fix: Use embedded Base64 data directly ---
+            const logoBase64 = logoBase64Data;
+            // --- End of Fix ---
+
+            const logoHtml = logoBase64 ? `<img src="${logoBase64}" alt="Spark Seneca Logo" style="height: 80px; width: 80px; margin: 0 auto 20px; display: block;">` : `<h1>Spark Seneca</h1>`;
+
+            const reportHTML = `
+                <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <title>Spark Seneca Estimate Report</title>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"><\/script>
+                    <style>
+                        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; line-height: 1.6; color: #333; max-width: 800px; margin: 40px auto; padding: 20px; }
+                        #report-content { padding: 20px; border: 1px solid #ddd; border-radius: 8px; background: white; }
+                        h1, h2, h3 { color: #1a1a1a; }
+                        h1 { font-size: 28px; text-align: center; margin-bottom: 20px;}
+                        h2 { font-size: 22px; color: #0B66FF; border-bottom: 1px solid #ddd; padding-bottom: 5px; margin-top: 40px; }
+                        h3 { font-size: 18px; margin-bottom: 10px; }
+                        .summary { background-color: #f8faff; border: 1px solid #e5e7eb; border-radius: 8px; padding: 20px; margin-top: 20px; }
+                        .summary-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #e5e7eb; }
+                        .summary-item:last-child { border-bottom: none; }
+                        .summary-item strong { color: #1a1a1a; }
+                        .total { background-color: #e6f7ec; padding: 15px; text-align: center; border-radius: 8px; margin-top: 20px; }
+                        .total strong { font-size: 24px; color: #047857; }
+                        ul { list-style: none; padding-left: 0; }
+                        li { background: #fff; border: 1px solid #e5e7eb; padding: 10px 15px; margin-bottom: 8px; border-radius: 5px; display: flex; justify-content: space-between; }
+                        li .credits { color: #555; font-size: 0.9em; }
+                        .call-to-action { text-align: center; margin: 20px 0; padding: 20px; background-color: #eef2ff; border-radius: 8px; }
+                        .call-to-action a { color: #0B66FF; text-decoration: none; font-weight: bold; font-size: 1.1em; }
+                        #save-image-btn { display: block; width: 200px; margin: 40px auto 0; padding: 10px 15px; background: #0B66FF; color: white; text-align: center; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; }
+                    </style>
+                </head>
+                <body>
+                    <div id="report-content">
+                        ${logoHtml}
+                        <h1>Estimate Report</h1>
+                        <p style="text-align: center; color: #777;">Generated on: ${new Date().toLocaleDateString()}</p>
+                        <div class="call-to-action">
+                            <p>Want to work with us to build a custom estimate? <a href="https://calendly.com/jimcusick/call-w-jim" target="_blank">Schedule a call!</a></p>
+                        </div>
+                        <h2>Selected Services</h2>
+                        ${Object.keys(selectedByCategory).length > 0 ? Object.entries(selectedByCategory).map(([category, services]) => `
+                            <div>
+                                <h3>${category}</h3>
+                                <ul>
+                                    ${services.map(s => `<li><span>${s.quantity}x ${s.name}</span> <span class="credits">${(s.credits * s.quantity).toFixed(2)} credits</span></li>`).join('')}
+                                </ul>
+                            </div>
+                        `).join('') : '<p>No services selected.</p>'}
+                        <h2>Summary</h2>
+                        <div class="summary">
+                            <div class="summary-item">
+                                <span>Total Credits Needed</span>
+                                <strong>${totalCredits.toFixed(2)}</strong>
+                            </div>
+                            ${recommended.packs.map(p => `
+                                <div class="summary-item">
+                                    <span>${p.count}x ${p.size.toLocaleString()} Credit Pack</span>
+                                    <strong>$${(p.price * p.count).toLocaleString()}</strong>
+                                </div>
+                            `).join('')}
+                             <div class="total">
+                                <span>Total Estimated Investment</span><br>
+                                <strong>$${recommended.totalCost.toLocaleString()}</strong>
+                            </div>
+                        </div>
+                    </div>
+                    <button id="save-image-btn">Save as Image</button>
+                    <script>
+                        document.getElementById('save-image-btn').addEventListener('click', () => {
+                            const btn = document.getElementById('save-image-btn');
+                            const reportContent = document.getElementById('report-content');
+                            btn.style.display = 'none'; // Hide button from screenshot
+                            html2canvas(reportContent, { scale: 1.5, backgroundColor: '#f8faff' }).then(canvas => {
+                                const link = document.createElement('a');
+                                link.download = 'Spark-Seneca-Estimate.png';
+                                link.href = canvas.toDataURL('image/png');
+                                link.click();
+                                btn.style.display = 'block'; // Show button again
+                            });
+                        });
+                    <\/script>
+                </body>
+                </html>
+            `;
+
+            const blob = new Blob([reportHTML], { type: 'text/html' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'Spark-Seneca-Estimate.html';
+            link.click();
+            URL.revokeObjectURL(link.href);
         }
         
         function handleReset() {
@@ -328,7 +440,7 @@
 
         categoriesContainer.addEventListener('change', handleSelectionChange);
         categoriesContainer.addEventListener('input', handleSelectionChange);
-        downloadBtn.addEventListener('click', handleScreenshot);
+        downloadBtn.addEventListener('click', handleDownloadReport);
         resetBtn.addEventListener('click', handleReset);
         
         render();
