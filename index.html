@@ -10,13 +10,11 @@
 <style>
 *{box-sizing:border-box}
 body{font-family:'Inter',sans-serif;background:#ffffff;color:#1a1a1a;margin:0;padding:0;line-height:1.5;-webkit-font-smoothing:antialiased}
-.pricing-page{padding:0 24px 60px;max-width:1100px;margin:0 auto}
-.intro-section{text-align:center;padding:48px 0 24px}
-.intro-section h2{font-size:clamp(34px,4.5vw,48px);font-weight:700;color:#1a1a1a;margin:0 0 16px;letter-spacing:-0.02em;line-height:1.1}
-.intro-section h2::after{content:'';display:block;width:60px;height:4px;background:linear-gradient(90deg,#0B66FF 0%,#4F87FF 100%);border-radius:2px;margin:20px auto 24px}
-.intro-sub{font-size:19px;color:#4b5563;line-height:1.6;max-width:640px;margin:0 auto}
-.intro-sub strong{color:#1a1a1a;font-weight:600}
-.pricing-packs{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:40px 0 56px}
+.pricing-page{padding:24px 24px 60px;max-width:1100px;margin:0 auto}
+
+/* Pack zones */
+.zone-label{font-size:12px;font-weight:700;color:#0B66FF;text-transform:uppercase;letter-spacing:0.12em;text-align:center;margin:0 0 16px}
+.pricing-packs{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin:0 auto 32px;max-width:720px}
 .pack-card{background:#fff;border:2px solid #e5e7eb;border-radius:14px;padding:24px 20px;text-align:center;transition:all 0.3s ease}
 .pack-card:hover{border-color:#0B66FF;transform:translateY(-3px);box-shadow:0 10px 24px rgba(11,102,255,.1)}
 .pack-name{font-size:13px;font-weight:700;color:#0B66FF;text-transform:uppercase;letter-spacing:0.1em;margin:0 0 12px}
@@ -24,7 +22,18 @@ body{font-family:'Inter',sans-serif;background:#ffffff;color:#1a1a1a;margin:0;pa
 .pack-credits-label{font-size:13px;color:#6b7280;margin:0 0 16px}
 .pack-price{font-size:22px;font-weight:700;color:#1a1a1a;margin:0 0 4px}
 .pack-per-credit{font-size:12px;color:#6b7280}
-.calc-section{display:grid;grid-template-columns:1fr 360px;gap:32px;align-items:start}
+.pack-installment{margin-top:14px;padding-top:14px;border-top:1px solid #f3f4f6}
+.pack-installment-label{font-size:11px;font-weight:600;color:#0B66FF;text-transform:uppercase;letter-spacing:0.08em;margin:0 0 4px}
+.pack-installment-value{font-size:16px;font-weight:700;color:#1a1a1a}
+.zone-divider{text-align:center;font-size:14px;color:#6b7280;margin:8px 0 32px;line-height:1.5}
+.zone-divider strong{color:#1a1a1a;font-weight:600}
+
+/* Disclaimer */
+.estimate-disclaimer{text-align:center;font-size:13px;color:#6b7280;margin:24px auto 16px;font-style:italic;max-width:640px}
+
+/* Calculator */
+.calc-section-title{font-size:14px;font-weight:700;color:#0B66FF;text-transform:uppercase;letter-spacing:0.12em;text-align:center;margin:40px 0 12px}
+.calc-section{display:grid;grid-template-columns:1fr 360px;gap:32px;align-items:start;margin-top:24px}
 .services-wrap{display:flex;flex-direction:column;gap:20px}
 .category-card{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:24px;transition:all 0.2s ease}
 .category-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.04)}
@@ -38,9 +47,15 @@ body{font-family:'Inter',sans-serif;background:#ffffff;color:#1a1a1a;margin:0;pa
 .themed-checkbox:checked::before{transform:scale(1)}
 .service-label{flex:1;cursor:pointer;font-size:15px}
 .service-label .service-name{display:block;color:#1a1a1a;font-weight:500}
-.service-label .service-credits{display:block;font-size:12px;color:#6b7280;margin-top:2px}
+.service-credits{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:#6b7280;margin-top:2px}
+.tag-pill{display:inline-block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;padding:2px 6px;border-radius:4px;margin-left:4px}
+.tag-starting{background:#fef3c7;color:#b45309}
+.tag-perseat{background:#dbeafe;color:#1e40af}
+.tag-permo{background:#dcfce7;color:#15803d}
 .quantity-input{width:54px;padding:6px 8px;background:#f9fafb;border:1px solid #e5e7eb;border-radius:6px;text-align:center;font-size:14px;color:#1a1a1a;font-family:inherit}
 .quantity-input.hidden{display:none}
+
+/* Sidebar */
 .estimate-panel{position:sticky;top:24px;background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:28px;box-shadow:0 6px 20px rgba(0,0,0,.06)}
 .estimate-panel h2{font-size:20px;text-align:center;margin:0 0 20px;color:#1a1a1a;font-weight:700;letter-spacing:-0.01em;line-height:1.2}
 .credits-display{text-align:center;padding:20px;background:linear-gradient(135deg,#f0f7ff 0%,#ffffff 100%);border-radius:12px;margin-bottom:20px}
@@ -53,38 +68,46 @@ body{font-family:'Inter',sans-serif;background:#ffffff;color:#1a1a1a;margin:0;pa
 .rec-item:last-child{margin-bottom:0}
 .rec-pack{font-weight:600;color:#1a1a1a}
 .rec-price{color:#4b5563}
-.total-block{background:linear-gradient(135deg,#0B66FF 0%,#4F87FF 100%);color:#fff;border-radius:10px;padding:18px;text-align:center;margin-bottom:20px}
+.rec-installment{font-size:12px;color:#0B66FF;font-weight:600;margin-top:8px;padding-top:8px;border-top:1px solid rgba(11,102,255,0.15);text-align:center}
+.total-block{background:linear-gradient(135deg,#0B66FF 0%,#4F87FF 100%);color:#fff;border-radius:10px;padding:18px;text-align:center;margin-bottom:16px}
 .total-label{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;opacity:0.85;margin-bottom:6px}
 .total-value{font-size:30px;font-weight:800;letter-spacing:-0.02em;line-height:1}
+.sidebar-disclaimer{font-size:12px;color:#6b7280;text-align:center;margin:0 0 16px;line-height:1.5;font-style:italic;padding:0 8px}
 .btn-email{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:16px;background:linear-gradient(135deg,#0B66FF 0%,#4F87FF 100%);color:#fff;text-decoration:none;border:none;font-size:15px;font-weight:600;border-radius:10px;cursor:pointer;transition:all 0.2s ease;box-shadow:0 4px 16px rgba(11,102,255,.25);font-family:inherit}
 .btn-email:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 24px rgba(11,102,255,.35)}
 .btn-email:disabled{opacity:0.4;cursor:not-allowed;background:#9ca3af;box-shadow:none}
-.btn-call{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px;background:#fff;color:#1a1a1a;text-decoration:none;border:2px solid #e5e7eb;font-size:15px;font-weight:600;border-radius:10px;cursor:pointer;transition:all 0.2s ease;margin-top:10px;font-family:inherit}
-.btn-call:hover{border-color:#0B66FF;color:#0B66FF}
 .btn-reset{display:block;width:100%;background:none;border:none;color:#6b7280;font-size:13px;margin-top:14px;cursor:pointer;text-decoration:underline;font-family:inherit;text-align:center}
 .btn-reset:hover{color:#1a1a1a}
+
+/* Footer */
 .calc-footer{text-align:center;padding:48px 24px;margin-top:48px;border-top:1px solid #e5e7eb}
 .calc-footer h3{font-size:22px;font-weight:700;color:#1a1a1a;margin:0 0 12px}
 .calc-footer p{font-size:16px;color:#4b5563;margin:0 0 24px;line-height:1.5}
-.footer-btn{display:inline-block;background:linear-gradient(135deg,#0B66FF 0%,#4F87FF 100%);color:#fff;padding:18px 36px;border-radius:12px;text-decoration:none;font-weight:600;font-size:16px;transition:all 0.2s ease;box-shadow:0 8px 24px rgba(11,102,255,.25)}
-.footer-btn:hover{transform:translateY(-2px);box-shadow:0 14px 32px rgba(11,102,255,.35)}
+.footer-buttons{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.footer-btn-primary{display:inline-block;background:linear-gradient(135deg,#0B66FF 0%,#4F87FF 100%);color:#fff;padding:16px 32px;border-radius:12px;text-decoration:none;font-weight:600;font-size:16px;transition:all 0.2s ease;box-shadow:0 8px 24px rgba(11,102,255,.25)}
+.footer-btn-primary:hover{transform:translateY(-2px);box-shadow:0 14px 32px rgba(11,102,255,.35)}
+.footer-btn-secondary{display:inline-block;background:#fff;color:#1a1a1a;padding:16px 32px;border-radius:12px;text-decoration:none;font-weight:600;font-size:16px;border:2px solid #e5e7eb;transition:all 0.2s ease}
+.footer-btn-secondary:hover{border-color:#0B66FF;color:#0B66FF}
+
 @media (max-width:900px){
 .calc-section{grid-template-columns:1fr}
 .estimate-panel{position:static}
-.pricing-packs{grid-template-columns:repeat(2,1fr)}
 }
 @media (max-width:560px){
-.pricing-packs{grid-template-columns:1fr}
-.pricing-page{padding:0 16px 48px}
+.pricing-packs{grid-template-columns:1fr;max-width:100%}
+.pricing-page{padding:16px 16px 48px}
+.footer-buttons{flex-direction:column}
 }
 </style>
 </head>
 <body>
 <div class="pricing-page">
-<div class="intro-section">
-<h2>Build Your Engagement</h2>
-<p class="intro-sub">Pick services, see your estimate, and we'll <strong>finalize the scope on a call.</strong> Credits work across consulting, done-with-you work, and async builds.</p>
-</div>
+
+<!-- Disclaimer -->
+<p class="estimate-disclaimer">Estimates only — final pricing scoped on a call.</p>
+
+<!-- Pay Up Front -->
+<p class="zone-label">Pay Up Front</p>
 <div class="pricing-packs">
 <div class="pack-card">
 <div class="pack-name">Starter</div>
@@ -100,12 +123,24 @@ body{font-family:'Inter',sans-serif;background:#ffffff;color:#1a1a1a;margin:0;pa
 <div class="pack-price">$11,250</div>
 <div class="pack-per-credit">$45 per credit</div>
 </div>
+</div>
+
+<!-- Divider -->
+<p class="zone-divider"><strong>Bigger packs available as monthly payments.</strong><br>No interest, no fees.</p>
+
+<!-- Pay Over Time -->
+<p class="zone-label">Pay Over Time</p>
+<div class="pricing-packs">
 <div class="pack-card">
 <div class="pack-name">Growth</div>
 <div class="pack-credits">500</div>
 <div class="pack-credits-label">credits</div>
 <div class="pack-price">$20,000</div>
 <div class="pack-per-credit">$40 per credit</div>
+<div class="pack-installment">
+<div class="pack-installment-label">3 monthly payments</div>
+<div class="pack-installment-value">$6,667/mo</div>
+</div>
 </div>
 <div class="pack-card">
 <div class="pack-name">Scale</div>
@@ -113,8 +148,16 @@ body{font-family:'Inter',sans-serif;background:#ffffff;color:#1a1a1a;margin:0;pa
 <div class="pack-credits-label">credits</div>
 <div class="pack-price">$35,000</div>
 <div class="pack-per-credit">$35 per credit</div>
+<div class="pack-installment">
+<div class="pack-installment-label">4 monthly payments</div>
+<div class="pack-installment-value">$8,750/mo</div>
 </div>
 </div>
+</div>
+
+<!-- Calculator -->
+<p class="calc-section-title">Build Your Engagement</p>
+
 <div class="calc-section">
 <div id="services-container" class="services-wrap"></div>
 <aside class="estimate-panel">
@@ -126,41 +169,67 @@ body{font-family:'Inter',sans-serif;background:#ffffff;color:#1a1a1a;margin:0;pa
 <div id="recommendations">
 <div class="recommendation-empty">Pick services and your recommended pack will appear here.</div>
 </div>
+<p class="sidebar-disclaimer">Estimates only. Final scope and pricing finalized on a call.</p>
 <button id="email-btn" class="btn-email" disabled>Email Me My Estimate</button>
-<a href="https://calendly.com/jimcusick/call-w-jim" target="_blank" rel="noopener" class="btn-call">Book a Call Directly</a>
 <button id="reset-btn" class="btn-reset">Reset Selections</button>
 </aside>
 </div>
+
+<!-- Footer -->
 <div class="calc-footer">
 <h3>Need something not on this list?</h3>
-<p>The full service catalog runs deeper than what's shown here. Book a call and I'll walk you through it.</p>
-<a href="https://calendly.com/jimcusick/call-w-jim" target="_blank" rel="noopener" class="footer-btn">Book a Call</a>
+<p>The full service catalog runs deeper than what's shown here.</p>
+<div class="footer-buttons">
+<a href="#" id="catalog-btn" class="footer-btn-secondary">See Full Catalog →</a>
+<a href="https://calendly.com/jimcusick/call-w-jim" target="_blank" rel="noopener" class="footer-btn-primary">Book a Call</a>
 </div>
 </div>
+
+</div>
+
 <script>
 (function(){
 const services = [
-{name:'Strategic Planning Session', credits:30, category:'Strategy & Advisory'},
-{name:'Monthly Advisory', credits:20, category:'Strategy & Advisory'},
-{name:'Maturity Assessment', credits:5, category:'Strategy & Advisory'},
-{name:'Sales Tech Audit', credits:25, category:'Audits & Builds'},
-{name:'Sales Navigator Activation', credits:40, category:'Audits & Builds'},
-{name:'Custom App Build', credits:50, category:'Audits & Builds'},
-{name:'Tool Setup & Integration', credits:25, category:'Audits & Builds'},
-{name:'AI Workflow Build', credits:10, category:'Workflows & Systems'},
-{name:'Workflow Rewrite', credits:15, category:'Workflows & Systems'},
-{name:'Custom GPT Build', credits:8, category:'Workflows & Systems'},
-{name:'1:1 Working Session (90 min)', credits:10, category:'Sessions & Training'},
-{name:'Team Workshop (function-specific)', credits:80, category:'Sessions & Training'}
+{name:'Strategic Planning Session', credits:30, category:'Strategy & Advisory', tag:'fixed'},
+{name:'Monthly Advisory', credits:20, category:'Strategy & Advisory', tag:'permo', tagLabel:'per mo'},
+{name:'Maturity Assessment', credits:5, category:'Strategy & Advisory', tag:'fixed'},
+{name:'Tech Audit', credits:25, category:'Audits & Builds', tag:'starting'},
+{name:'Sales Navigator Activation', credits:20, category:'Audits & Builds', tag:'perseat', tagLabel:'per seat'},
+{name:'Custom App Build', credits:50, category:'Audits & Builds', tag:'starting'},
+{name:'Tool Setup & Integration', credits:25, category:'Audits & Builds', tag:'starting'},
+{name:'AI Workflow Build', credits:10, category:'Workflows & Systems', tag:'starting'},
+{name:'Workflow Rewrite', credits:15, category:'Workflows & Systems', tag:'starting'},
+{name:'Custom GPT Build', credits:8, category:'Workflows & Systems', tag:'fixed'},
+{name:'1:1 Working Session (90 min)', credits:10, category:'Sessions & Training', tag:'fixed'},
+{name:'Team Workshop (function-specific)', credits:40, category:'Sessions & Training', tag:'starting'},
+{name:'Growth by Proxy — Setup', credits:40, category:'Done For You', tag:'fixed'},
+{name:'Growth by Proxy — Monthly', credits:50, category:'Done For You', tag:'perseat', tagLabel:'per seat/mo'},
+{name:'Custom Target List', credits:15, category:'Done For You', tag:'starting'},
+{name:'Async AI Workflow', credits:20, category:'Done For You', tag:'starting'}
 ];
-const packs = [{size:100,price:5000},{size:250,price:11250},{size:500,price:20000},{size:1000,price:35000}];
-const FILLOUT_URL = 'YOUR_FILLOUT_URL_HERE';
+const packs = [
+{size:100,price:5000,name:'Starter',installments:null},
+{size:250,price:11250,name:'Pro',installments:null},
+{size:500,price:20000,name:'Growth',installments:3},
+{size:1000,price:35000,name:'Scale',installments:4}
+];
+const EMAIL_ESTIMATE_URL = 'YOUR_EMAIL_ESTIMATE_FILLOUT_URL';
+const FULL_CATALOG_URL = 'YOUR_FULL_CATALOG_FILLOUT_URL';
 const state = {selected:{}};
 const container = document.getElementById('services-container');
 const totalEl = document.getElementById('total-credits');
 const recsEl = document.getElementById('recommendations');
 const emailBtn = document.getElementById('email-btn');
 const resetBtn = document.getElementById('reset-btn');
+const catalogBtn = document.getElementById('catalog-btn');
+
+function tagPill(tag, label){
+if(tag==='starting') return '<span class="tag-pill tag-starting">Starting At</span>';
+if(tag==='perseat') return '<span class="tag-pill tag-perseat">'+(label||'Per Seat')+'</span>';
+if(tag==='permo') return '<span class="tag-pill tag-permo">'+(label||'Per Month')+'</span>';
+return '';
+}
+
 function render(){
 const cats = [...new Set(services.map(s=>s.category))];
 container.innerHTML = cats.map(cat=>{
@@ -168,7 +237,8 @@ const items = services.filter(s=>s.category===cat).map(s=>{
 const safeId = 'cb-'+s.name.replace(/[^a-z0-9]/gi,'-');
 const checked = !!state.selected[s.name];
 const qty = state.selected[s.name] || 1;
-return '<div class="service-item"><input type="checkbox" id="'+safeId+'" class="themed-checkbox" data-name="'+s.name+'" '+(checked?'checked':'')+'><label for="'+safeId+'" class="service-label"><span class="service-name">'+s.name+'</span><span class="service-credits">'+s.credits+' credits each</span></label><input type="number" min="1" value="'+qty+'" data-name="'+s.name+'" class="quantity-input '+(checked?'':'hidden')+'"></div>';
+const creditsDisplay = s.tag==='starting' ? s.credits+'+ credits' : s.credits+' credits';
+return '<div class="service-item"><input type="checkbox" id="'+safeId+'" class="themed-checkbox" data-name="'+s.name+'" '+(checked?'checked':'')+'><label for="'+safeId+'" class="service-label"><span class="service-name">'+s.name+'</span><span class="service-credits">'+creditsDisplay+tagPill(s.tag, s.tagLabel)+'</span></label><input type="number" min="1" value="'+qty+'" data-name="'+s.name+'" class="quantity-input '+(checked?'':'hidden')+'"></div>';
 }).join('');
 return '<div class="category-card"><h3>'+cat+'</h3>'+items+'</div>';
 }).join('');
@@ -177,21 +247,33 @@ totalEl.textContent = total;
 renderRecs(total);
 emailBtn.disabled = total === 0;
 }
+
 function calcTotal(){
 return Object.entries(state.selected).reduce((sum,[name,qty])=>{
 const svc = services.find(s=>s.name===name);
 return sum + (svc?svc.credits*qty:0);
 },0);
 }
+
 function renderRecs(total){
 if(total === 0){
 recsEl.innerHTML = '<div class="recommendation-empty">Pick services and your recommended pack will appear here.</div>';
 return;
 }
 const rec = findBestPacks(total);
-const packLines = rec.packs.map(p=>'<div class="rec-item"><span class="rec-pack">'+p.count+'× '+p.size.toLocaleString()+' credits</span><span class="rec-price">$'+(p.price*p.count).toLocaleString()+'</span></div>').join('');
-recsEl.innerHTML = '<div class="recommendation-block"><div class="rec-label">Recommended Pack</div>'+packLines+'</div><div class="total-block"><div class="total-label">Estimated Investment</div><div class="total-value">$'+rec.total.toLocaleString()+'</div></div>';
+const packLines = rec.packs.map(p=>'<div class="rec-item"><span class="rec-pack">'+p.count+'× '+p.name+' Pack</span><span class="rec-price">$'+(p.price*p.count).toLocaleString()+'</span></div>').join('');
+let installmentLine = '';
+const hasInstallments = rec.packs.some(p=>p.installments);
+if(hasInstallments){
+const installmentParts = rec.packs.filter(p=>p.installments).map(p=>{
+const monthly = Math.round(p.price/p.installments);
+return p.count+'× '+p.name+': '+p.installments+' payments of $'+monthly.toLocaleString();
+});
+installmentLine = '<div class="rec-installment">Or pay monthly — '+installmentParts.join(' · ')+'</div>';
 }
+recsEl.innerHTML = '<div class="recommendation-block"><div class="rec-label">Recommended</div>'+packLines+installmentLine+'</div><div class="total-block"><div class="total-label">Estimated Investment</div><div class="total-value">$'+rec.total.toLocaleString()+'</div></div>';
+}
+
 function findBestPacks(target){
 let best=[],low=Infinity;
 function search(t,used,cost){
@@ -205,22 +287,29 @@ search(target,[],0);
 const counts = best.reduce((acc,p)=>{acc[p.size]=(acc[p.size]||0)+1;return acc;},{});
 const finalPacks = Object.entries(counts).map(([size,count])=>{
 const p = packs.find(x=>x.size==size);
-return {size:p.size,price:p.price,count:count};
+return {size:p.size,price:p.price,name:p.name,installments:p.installments,count:count};
 }).sort((a,b)=>b.size-a.size);
 return {packs:finalPacks,total:low};
 }
-function openFillout(){
+
+function openEmailEstimate(){
 const total = calcTotal();
 const rec = findBestPacks(total);
-const packsStr = rec.packs.map(p=>p.count+'x '+p.size+' credit pack').join(', ');
+const packsStr = rec.packs.map(p=>p.count+'x '+p.name+' Pack ('+p.size+' credits)').join(', ');
 const servicesStr = Object.entries(state.selected).map(([n,q])=>q+'x '+n).join(', ');
-const url = new URL(FILLOUT_URL);
+const url = new URL(EMAIL_ESTIMATE_URL);
 url.searchParams.set('total_credits', total);
 url.searchParams.set('recommended_packs', packsStr);
 url.searchParams.set('total_price', '$'+rec.total.toLocaleString());
 url.searchParams.set('services_selected', servicesStr);
 window.open(url.toString(), '_blank');
 }
+
+function openCatalogRequest(e){
+e.preventDefault();
+window.open(FULL_CATALOG_URL, '_blank');
+}
+
 container.addEventListener('change',e=>{
 const t = e.target;
 if(t.type==='checkbox'){
@@ -242,8 +331,9 @@ render();
 }
 }
 });
-emailBtn.addEventListener('click',openFillout);
+emailBtn.addEventListener('click',openEmailEstimate);
 resetBtn.addEventListener('click',()=>{state.selected={};render();});
+catalogBtn.addEventListener('click',openCatalogRequest);
 render();
 })();
 </script>
