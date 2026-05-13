@@ -25,19 +25,23 @@ body{font-family:'Inter',sans-serif;background:#ffffff;color:#1a1a1a;margin:0;pa
 .pack-installment{margin-top:14px;padding-top:14px;border-top:1px solid #f3f4f6}
 .pack-installment-label{font-size:11px;font-weight:600;color:#0B66FF;text-transform:uppercase;letter-spacing:0.08em;margin:0 0 4px}
 .pack-installment-value{font-size:16px;font-weight:700;color:#1a1a1a}
-.zone-divider{text-align:center;font-size:14px;color:#6b7280;margin:8px 0 32px;line-height:1.5}
+.zone-divider{text-align:center;font-size:14px;color:#6b7280;margin:8px auto 32px;line-height:1.5;max-width:480px}
 .zone-divider strong{color:#1a1a1a;font-weight:600}
 
-/* Disclaimer */
-.estimate-disclaimer{text-align:center;font-size:13px;color:#6b7280;margin:24px auto 16px;font-style:italic;max-width:640px}
+/* Disclaimer pill at the top */
+.estimate-disclaimer{display:flex;align-items:center;justify-content:center;gap:8px;max-width:480px;margin:0 auto 32px;padding:12px 20px;background:#f0f7ff;border:1px solid #d6e6fb;border-radius:10px;font-size:13px;color:#4b5563;text-align:center;line-height:1.4}
+.estimate-disclaimer strong{color:#0B66FF;font-weight:700}
+.estimate-disclaimer .info-icon{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;background:#0B66FF;color:#fff;border-radius:50%;font-size:12px;font-weight:700;flex-shrink:0;font-family:Georgia,serif;font-style:italic}
 
-/* Calculator */
-.calc-section-title{font-size:14px;font-weight:700;color:#0B66FF;text-transform:uppercase;letter-spacing:0.12em;text-align:center;margin:40px 0 12px}
-.calc-section{display:grid;grid-template-columns:1fr 360px;gap:32px;align-items:start;margin-top:24px}
-.services-wrap{display:flex;flex-direction:column;gap:20px}
-.category-card{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:24px;transition:all 0.2s ease}
+/* Calculator section title */
+.calc-section-title{font-size:14px;font-weight:700;color:#0B66FF;text-transform:uppercase;letter-spacing:0.12em;text-align:center;margin:40px 0 24px}
+
+/* Calculator grid */
+.calc-section{display:grid;grid-template-columns:1fr 320px;gap:24px;align-items:start;margin-top:8px}
+.services-wrap{display:flex;flex-direction:column;gap:16px;min-width:0}
+.category-card{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:22px 20px;transition:all 0.2s ease}
 .category-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.04)}
-.category-card h3{font-size:16px;font-weight:700;color:#0B66FF;text-transform:uppercase;letter-spacing:0.08em;margin:0 0 16px;text-align:left}
+.category-card h3{font-size:14px;font-weight:700;color:#0B66FF;text-transform:uppercase;letter-spacing:0.08em;margin:0 0 14px;text-align:left}
 .service-item{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #f3f4f6}
 .service-item:last-child{border-bottom:none}
 .themed-checkbox{appearance:none;background:#fff;margin:0;width:20px;height:20px;border:2px solid #e5e7eb;border-radius:4px;cursor:pointer;display:grid;place-content:center;flex-shrink:0;transition:all 0.2s ease}
@@ -45,55 +49,58 @@ body{font-family:'Inter',sans-serif;background:#ffffff;color:#1a1a1a;margin:0;pa
 .themed-checkbox:checked{background:#0B66FF;border-color:#0B66FF}
 .themed-checkbox::before{content:"";width:12px;height:12px;transform:scale(0);transition:transform 0.15s ease;background:#fff;clip-path:polygon(14% 44%,0 65%,50% 100%,100% 16%,80% 0%,43% 62%)}
 .themed-checkbox:checked::before{transform:scale(1)}
-.service-label{flex:1;cursor:pointer;font-size:15px}
-.service-label .service-name{display:block;color:#1a1a1a;font-weight:500}
-.service-credits{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:#6b7280;margin-top:2px}
-.tag-pill{display:inline-block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;padding:2px 6px;border-radius:4px;margin-left:4px}
-.tag-starting{background:#fef3c7;color:#b45309}
-.tag-perseat{background:#dbeafe;color:#1e40af}
-.tag-permo{background:#dcfce7;color:#15803d}
-.quantity-input{width:54px;padding:6px 8px;background:#f9fafb;border:1px solid #e5e7eb;border-radius:6px;text-align:center;font-size:14px;color:#1a1a1a;font-family:inherit}
+.service-label{flex:1;cursor:pointer;font-size:14px;min-width:0}
+.service-label .service-name{display:block;color:#1a1a1a;font-weight:500;line-height:1.3}
+.service-credits{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:#6b7280;margin-top:4px;flex-wrap:wrap}
+
+/* Unified tag pill system */
+.tag-pill{display:inline-block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;padding:2px 7px;border-radius:4px;background:#eef2ff;color:#4338ca;border:1px solid #e0e7ff}
+.tag-pill.tag-starting{background:#f0f7ff;color:#0B66FF;border-color:#d6e6fb}
+.tag-pill.tag-perseat{background:#f0f7ff;color:#0B66FF;border-color:#d6e6fb}
+.tag-pill.tag-permo{background:#f0f7ff;color:#0B66FF;border-color:#d6e6fb}
+
+.quantity-input{width:50px;padding:6px 8px;background:#f9fafb;border:1px solid #e5e7eb;border-radius:6px;text-align:center;font-size:13px;color:#1a1a1a;font-family:inherit;flex-shrink:0}
 .quantity-input.hidden{display:none}
 
-/* Sidebar */
-.estimate-panel{position:sticky;top:24px;background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:28px;box-shadow:0 6px 20px rgba(0,0,0,.06)}
-.estimate-panel h2{font-size:20px;text-align:center;margin:0 0 20px;color:#1a1a1a;font-weight:700;letter-spacing:-0.01em;line-height:1.2}
-.credits-display{text-align:center;padding:20px;background:linear-gradient(135deg,#f0f7ff 0%,#ffffff 100%);border-radius:12px;margin-bottom:20px}
-.credits-label{font-size:12px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:0.1em;margin:0 0 8px}
-.credits-value{font-size:42px;font-weight:800;color:#0B66FF;letter-spacing:-0.03em;line-height:1}
-.recommendation-empty{text-align:center;padding:24px 12px;color:#6b7280;font-size:14px;line-height:1.5;border-radius:10px;background:#f9fafb;margin-bottom:20px}
-.recommendation-block{background:#f0f7ff;border:1px solid #d6e6fb;border-radius:10px;padding:16px;margin-bottom:12px}
-.rec-label{font-size:11px;font-weight:700;color:#0B66FF;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:10px}
-.rec-item{display:flex;justify-content:space-between;font-size:14px;margin-bottom:6px}
+/* Sticky sidebar */
+.estimate-panel{position:sticky;top:24px;background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:24px 20px;box-shadow:0 6px 20px rgba(0,0,0,.06)}
+.estimate-panel h2{font-size:18px;text-align:center;margin:0 0 18px;color:#1a1a1a;font-weight:700;letter-spacing:-0.01em;line-height:1.2}
+.credits-display{text-align:center;padding:18px;background:linear-gradient(135deg,#f0f7ff 0%,#ffffff 100%);border-radius:12px;margin-bottom:18px}
+.credits-label{font-size:11px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:0.1em;margin:0 0 8px}
+.credits-value{font-size:38px;font-weight:800;color:#0B66FF;letter-spacing:-0.03em;line-height:1}
+.recommendation-empty{text-align:center;padding:20px 10px;color:#6b7280;font-size:13px;line-height:1.5;border-radius:10px;background:#f9fafb;margin-bottom:18px}
+.recommendation-block{background:#f0f7ff;border:1px solid #d6e6fb;border-radius:10px;padding:14px;margin-bottom:12px}
+.rec-label{font-size:10px;font-weight:700;color:#0B66FF;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:10px}
+.rec-item{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:13px;margin-bottom:6px}
 .rec-item:last-child{margin-bottom:0}
-.rec-pack{font-weight:600;color:#1a1a1a}
-.rec-price{color:#4b5563}
-.rec-installment{font-size:12px;color:#0B66FF;font-weight:600;margin-top:8px;padding-top:8px;border-top:1px solid rgba(11,102,255,0.15);text-align:center}
-.total-block{background:linear-gradient(135deg,#0B66FF 0%,#4F87FF 100%);color:#fff;border-radius:10px;padding:18px;text-align:center;margin-bottom:16px}
-.total-label{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;opacity:0.85;margin-bottom:6px}
-.total-value{font-size:30px;font-weight:800;letter-spacing:-0.02em;line-height:1}
-.sidebar-disclaimer{font-size:12px;color:#6b7280;text-align:center;margin:0 0 16px;line-height:1.5;font-style:italic;padding:0 8px}
-.btn-email{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:16px;background:linear-gradient(135deg,#0B66FF 0%,#4F87FF 100%);color:#fff;text-decoration:none;border:none;font-size:15px;font-weight:600;border-radius:10px;cursor:pointer;transition:all 0.2s ease;box-shadow:0 4px 16px rgba(11,102,255,.25);font-family:inherit}
+.rec-pack{font-weight:600;color:#1a1a1a;flex:1;min-width:0}
+.rec-price{color:#4b5563;font-weight:500;flex-shrink:0}
+.rec-installment{font-size:11px;color:#0B66FF;font-weight:600;margin-top:8px;padding-top:8px;border-top:1px solid rgba(11,102,255,0.15);text-align:center;line-height:1.4}
+.total-block{background:linear-gradient(135deg,#0B66FF 0%,#4F87FF 100%);color:#fff;border-radius:10px;padding:16px;text-align:center;margin-bottom:14px}
+.total-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;opacity:0.85;margin-bottom:6px}
+.total-value{font-size:26px;font-weight:800;letter-spacing:-0.02em;line-height:1}
+.sidebar-disclaimer{font-size:11px;color:#6b7280;text-align:center;margin:0 0 14px;line-height:1.5;font-style:italic;padding:0 4px}
+.btn-email{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px;background:linear-gradient(135deg,#0B66FF 0%,#4F87FF 100%);color:#fff;text-decoration:none;border:none;font-size:14px;font-weight:600;border-radius:10px;cursor:pointer;transition:all 0.2s ease;box-shadow:0 4px 16px rgba(11,102,255,.25);font-family:inherit}
 .btn-email:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 24px rgba(11,102,255,.35)}
 .btn-email:disabled{opacity:0.4;cursor:not-allowed;background:#9ca3af;box-shadow:none}
-.btn-reset{display:block;width:100%;background:none;border:none;color:#6b7280;font-size:13px;margin-top:14px;cursor:pointer;text-decoration:underline;font-family:inherit;text-align:center}
+.btn-reset{display:block;width:100%;background:none;border:none;color:#6b7280;font-size:12px;margin-top:12px;cursor:pointer;text-decoration:underline;font-family:inherit;text-align:center}
 .btn-reset:hover{color:#1a1a1a}
 
 /* Footer */
-.calc-footer{text-align:center;padding:48px 24px;margin-top:48px;border-top:1px solid #e5e7eb}
-.calc-footer h3{font-size:22px;font-weight:700;color:#1a1a1a;margin:0 0 12px}
-.calc-footer p{font-size:16px;color:#4b5563;margin:0 0 24px;line-height:1.5}
-.footer-buttons{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
-.footer-btn-primary{display:inline-block;background:linear-gradient(135deg,#0B66FF 0%,#4F87FF 100%);color:#fff;padding:16px 32px;border-radius:12px;text-decoration:none;font-weight:600;font-size:16px;transition:all 0.2s ease;box-shadow:0 8px 24px rgba(11,102,255,.25)}
+.calc-footer{text-align:center;padding:40px 20px;margin-top:40px;border-top:1px solid #e5e7eb}
+.calc-footer h3{font-size:20px;font-weight:700;color:#1a1a1a;margin:0 0 10px;letter-spacing:-0.01em}
+.calc-footer p{font-size:15px;color:#4b5563;margin:0 0 22px;line-height:1.5}
+.footer-buttons{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.footer-btn-primary{display:inline-block;background:linear-gradient(135deg,#0B66FF 0%,#4F87FF 100%);color:#fff;padding:15px 30px;border-radius:12px;text-decoration:none;font-weight:600;font-size:15px;transition:all 0.2s ease;box-shadow:0 8px 24px rgba(11,102,255,.25)}
 .footer-btn-primary:hover{transform:translateY(-2px);box-shadow:0 14px 32px rgba(11,102,255,.35)}
-.footer-btn-secondary{display:inline-block;background:#fff;color:#1a1a1a;padding:16px 32px;border-radius:12px;text-decoration:none;font-weight:600;font-size:16px;border:2px solid #e5e7eb;transition:all 0.2s ease}
+.footer-btn-secondary{display:inline-block;background:#fff;color:#1a1a1a;padding:15px 30px;border-radius:12px;text-decoration:none;font-weight:600;font-size:15px;border:2px solid #e5e7eb;transition:all 0.2s ease}
 .footer-btn-secondary:hover{border-color:#0B66FF;color:#0B66FF}
 
-@media (max-width:900px){
+@media (max-width:680px){
 .calc-section{grid-template-columns:1fr}
 .estimate-panel{position:static}
 }
-@media (max-width:560px){
+@media (max-width:520px){
 .pricing-packs{grid-template-columns:1fr;max-width:100%}
 .pricing-page{padding:16px 16px 48px}
 .footer-buttons{flex-direction:column}
@@ -103,8 +110,11 @@ body{font-family:'Inter',sans-serif;background:#ffffff;color:#1a1a1a;margin:0;pa
 <body>
 <div class="pricing-page">
 
-<!-- Disclaimer -->
-<p class="estimate-disclaimer">Estimates only — final pricing scoped on a call.</p>
+<!-- Disclaimer pill -->
+<div class="estimate-disclaimer">
+<span class="info-icon">i</span>
+<span><strong>Estimates only.</strong> Final pricing scoped on a call.</span>
+</div>
 
 <!-- Pay Up Front -->
 <p class="zone-label">Pay Up Front</p>
@@ -169,7 +179,7 @@ body{font-family:'Inter',sans-serif;background:#ffffff;color:#1a1a1a;margin:0;pa
 <div id="recommendations">
 <div class="recommendation-empty">Pick services and your recommended pack will appear here.</div>
 </div>
-<p class="sidebar-disclaimer">Estimates only. Final scope and pricing finalized on a call.</p>
+<p class="sidebar-disclaimer">Estimates only. Final scope on a call.</p>
 <button id="email-btn" class="btn-email" disabled>Email Me My Estimate</button>
 <button id="reset-btn" class="btn-reset">Reset Selections</button>
 </aside>
