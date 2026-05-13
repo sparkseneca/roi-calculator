@@ -1,435 +1,251 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spark Seneca Credit Estimator</title>
-    
-    <!-- Tailwind CSS for styling -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    
-    <!-- Custom Styles to match your site -->
-    <style>
-        /* Define theme from your site */
-        body {
-            font-family: 'Inter', sans-serif;
-            background: #f8faff; /* Simplified background for embedding */
-            color: #4b5563;
-        }
-
-        /* Custom styles for UI elements to match your site's theme */
-        .themed-card {
-            background: #ffffff;
-            border: 1px solid #e5e7eb;
-            border-radius: 16px;
-            transition: all 0.3s ease;
-        }
-        
-        /* Primary button style from your theme */
-        .btn-primary {
-            background-color: #0B66FF;
-            color: white;
-            transition: background-color 0.3s ease;
-        }
-        .btn-primary:hover {
-            background-color: #0058e6;
-        }
-
-        /* Secondary button for 'Schedule a Call' */
-        .btn-secondary {
-            background-color: #eef2ff;
-            color: #0B66FF;
-            transition: background-color 0.3s ease;
-        }
-        .btn-secondary:hover {
-            background-color: #e0e7ff;
-        }
-        
-        /* Custom checkbox style */
-        .themed-checkbox {
-            appearance: none;
-            background-color: #fff;
-            margin: 0;
-            font: inherit;
-            color: currentColor;
-            width: 1.15em;
-            height: 1.15em;
-            border: 1px solid #e5e7eb;
-            border-radius: 4px;
-            transform: translateY(-0.075em);
-            display: grid;
-            place-content: center;
-            cursor: pointer;
-        }
-        .themed-checkbox::before {
-            content: "";
-            width: 0.65em;
-            height: 0.65em;
-            transform: scale(0);
-            transition: 120ms transform ease-in-out;
-            box-shadow: inset 1em 1em #0B66FF;
-            transform-origin: bottom left;
-            clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
-        }
-        .themed-checkbox:checked::before {
-            transform: scale(1);
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spark Seneca Pricing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:#ffffff;color:#1a1a1a;margin:0;padding:0;line-height:1.5;-webkit-font-smoothing:antialiased}
+.pricing-page{padding:0 24px 60px;max-width:1100px;margin:0 auto}
+.intro-section{text-align:center;padding:48px 0 24px}
+.intro-section h2{font-size:clamp(34px,4.5vw,48px);font-weight:700;color:#1a1a1a;margin:0 0 16px;letter-spacing:-0.02em;line-height:1.1}
+.intro-section h2::after{content:'';display:block;width:60px;height:4px;background:linear-gradient(90deg,#0B66FF 0%,#4F87FF 100%);border-radius:2px;margin:20px auto 24px}
+.intro-sub{font-size:19px;color:#4b5563;line-height:1.6;max-width:640px;margin:0 auto}
+.intro-sub strong{color:#1a1a1a;font-weight:600}
+.pricing-packs{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:40px 0 56px}
+.pack-card{background:#fff;border:2px solid #e5e7eb;border-radius:14px;padding:24px 20px;text-align:center;transition:all 0.3s ease}
+.pack-card:hover{border-color:#0B66FF;transform:translateY(-3px);box-shadow:0 10px 24px rgba(11,102,255,.1)}
+.pack-name{font-size:13px;font-weight:700;color:#0B66FF;text-transform:uppercase;letter-spacing:0.1em;margin:0 0 12px}
+.pack-credits{font-size:28px;font-weight:800;color:#1a1a1a;margin:0 0 4px;letter-spacing:-0.02em}
+.pack-credits-label{font-size:13px;color:#6b7280;margin:0 0 16px}
+.pack-price{font-size:22px;font-weight:700;color:#1a1a1a;margin:0 0 4px}
+.pack-per-credit{font-size:12px;color:#6b7280}
+.calc-section{display:grid;grid-template-columns:1fr 360px;gap:32px;align-items:start}
+.services-wrap{display:flex;flex-direction:column;gap:20px}
+.category-card{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:24px;transition:all 0.2s ease}
+.category-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.04)}
+.category-card h3{font-size:16px;font-weight:700;color:#0B66FF;text-transform:uppercase;letter-spacing:0.08em;margin:0 0 16px;text-align:left}
+.service-item{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #f3f4f6}
+.service-item:last-child{border-bottom:none}
+.themed-checkbox{appearance:none;background:#fff;margin:0;width:20px;height:20px;border:2px solid #e5e7eb;border-radius:4px;cursor:pointer;display:grid;place-content:center;flex-shrink:0;transition:all 0.2s ease}
+.themed-checkbox:hover{border-color:#0B66FF}
+.themed-checkbox:checked{background:#0B66FF;border-color:#0B66FF}
+.themed-checkbox::before{content:"";width:12px;height:12px;transform:scale(0);transition:transform 0.15s ease;background:#fff;clip-path:polygon(14% 44%,0 65%,50% 100%,100% 16%,80% 0%,43% 62%)}
+.themed-checkbox:checked::before{transform:scale(1)}
+.service-label{flex:1;cursor:pointer;font-size:15px}
+.service-label .service-name{display:block;color:#1a1a1a;font-weight:500}
+.service-label .service-credits{display:block;font-size:12px;color:#6b7280;margin-top:2px}
+.quantity-input{width:54px;padding:6px 8px;background:#f9fafb;border:1px solid #e5e7eb;border-radius:6px;text-align:center;font-size:14px;color:#1a1a1a;font-family:inherit}
+.quantity-input.hidden{display:none}
+.estimate-panel{position:sticky;top:24px;background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:28px;box-shadow:0 6px 20px rgba(0,0,0,.06)}
+.estimate-panel h2{font-size:20px;text-align:center;margin:0 0 20px;color:#1a1a1a;font-weight:700;letter-spacing:-0.01em;line-height:1.2}
+.credits-display{text-align:center;padding:20px;background:linear-gradient(135deg,#f0f7ff 0%,#ffffff 100%);border-radius:12px;margin-bottom:20px}
+.credits-label{font-size:12px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:0.1em;margin:0 0 8px}
+.credits-value{font-size:42px;font-weight:800;color:#0B66FF;letter-spacing:-0.03em;line-height:1}
+.recommendation-empty{text-align:center;padding:24px 12px;color:#6b7280;font-size:14px;line-height:1.5;border-radius:10px;background:#f9fafb;margin-bottom:20px}
+.recommendation-block{background:#f0f7ff;border:1px solid #d6e6fb;border-radius:10px;padding:16px;margin-bottom:12px}
+.rec-label{font-size:11px;font-weight:700;color:#0B66FF;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:10px}
+.rec-item{display:flex;justify-content:space-between;font-size:14px;margin-bottom:6px}
+.rec-item:last-child{margin-bottom:0}
+.rec-pack{font-weight:600;color:#1a1a1a}
+.rec-price{color:#4b5563}
+.total-block{background:linear-gradient(135deg,#0B66FF 0%,#4F87FF 100%);color:#fff;border-radius:10px;padding:18px;text-align:center;margin-bottom:20px}
+.total-label{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;opacity:0.85;margin-bottom:6px}
+.total-value{font-size:30px;font-weight:800;letter-spacing:-0.02em;line-height:1}
+.btn-email{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:16px;background:linear-gradient(135deg,#0B66FF 0%,#4F87FF 100%);color:#fff;text-decoration:none;border:none;font-size:15px;font-weight:600;border-radius:10px;cursor:pointer;transition:all 0.2s ease;box-shadow:0 4px 16px rgba(11,102,255,.25);font-family:inherit}
+.btn-email:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 24px rgba(11,102,255,.35)}
+.btn-email:disabled{opacity:0.4;cursor:not-allowed;background:#9ca3af;box-shadow:none}
+.btn-call{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px;background:#fff;color:#1a1a1a;text-decoration:none;border:2px solid #e5e7eb;font-size:15px;font-weight:600;border-radius:10px;cursor:pointer;transition:all 0.2s ease;margin-top:10px;font-family:inherit}
+.btn-call:hover{border-color:#0B66FF;color:#0B66FF}
+.btn-reset{display:block;width:100%;background:none;border:none;color:#6b7280;font-size:13px;margin-top:14px;cursor:pointer;text-decoration:underline;font-family:inherit;text-align:center}
+.btn-reset:hover{color:#1a1a1a}
+.calc-footer{text-align:center;padding:48px 24px;margin-top:48px;border-top:1px solid #e5e7eb}
+.calc-footer h3{font-size:22px;font-weight:700;color:#1a1a1a;margin:0 0 12px}
+.calc-footer p{font-size:16px;color:#4b5563;margin:0 0 24px;line-height:1.5}
+.footer-btn{display:inline-block;background:linear-gradient(135deg,#0B66FF 0%,#4F87FF 100%);color:#fff;padding:18px 36px;border-radius:12px;text-decoration:none;font-weight:600;font-size:16px;transition:all 0.2s ease;box-shadow:0 8px 24px rgba(11,102,255,.25)}
+.footer-btn:hover{transform:translateY(-2px);box-shadow:0 14px 32px rgba(11,102,255,.35)}
+@media (max-width:900px){
+.calc-section{grid-template-columns:1fr}
+.estimate-panel{position:static}
+.pricing-packs{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:560px){
+.pricing-packs{grid-template-columns:1fr}
+.pricing-page{padding:0 16px 48px}
+}
+</style>
 </head>
-<body class="p-4 md:p-8">
-
-    <div id="estimator-root">
-        <header class="text-center mb-12">
-            <h1 class="text-4xl sm:text-5xl font-bold tracking-tight" style="color: #1a1a1a;">
-                How to Use Your Credits
-            </h1>
-            <p class="text-lg mt-3 max-w-3xl mx-auto" style="color: #4b5563;">
-                Select from our services to build a custom package and generate your estimate.
-            </p>
-        </header>
-
-        <main class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-            
-            <!-- Categories Column -->
-            <div id="categories-container" class="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-8">
-                <!-- Category cards will be dynamically inserted here -->
-            </div>
-
-            <!-- Summary Column -->
-            <div class="lg:sticky top-8">
-                <div id="summary-panel" class="themed-card p-6 md:p-8">
-                     <!-- Prominent 'Schedule a Call' Button moved to the top -->
-                    <a href="https://calendly.com/jimcusick/call-w-jim" target="_blank" class="w-full flex items-center justify-center gap-2 font-semibold py-3 px-4 rounded-lg btn-secondary mb-6">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" x2="16" y1="2" y2="6"></line><line x1="8" x2="8" y1="2" y2="6"></line><line x1="3" x2="21" y1="10" y2="10"></line></svg>
-                        Schedule a Call
-                    </a>
-
-                    <div class="border-t border-slate-200 pt-6">
-                        <h2 class="text-2xl font-bold text-center mb-4" style="color: #1a1a1a;">Your Estimate</h2>
-                        
-                        <div class="text-center mb-6">
-                            <div class="text-sm uppercase tracking-wider mb-2" style="color: #4b5563;">Total Credits</div>
-                            <div id="total-credits" class="text-5xl font-extrabold" style="color: #0B66FF;">0.00</div>
-                        </div>
-                        
-                        <div id="recommendations" class="mb-6 space-y-4">
-                            <!-- Recommendations will be inserted here -->
-                        </div>
-                        
-                        <button id="download-btn" class="w-full flex items-center justify-center gap-2 font-semibold py-3 px-4 rounded-lg btn-primary disabled:opacity-50 disabled:cursor-not-allowed">
-                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-                            Download Report
-                        </button>
-                        <button id="reset-btn" class="w-full text-center text-sm text-slate-500 hover:text-slate-800 mt-4 transition-colors">Reset Selections</button>
-                    </div>
-                </div>
-            </div>
-        </main>
-    </div>
-
-    <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        
-        const servicesData = [
-            // Governance & Strategy
-            { name: 'Company-Wide AI Acceptable Use Policy', credits: 25.00, displayCategory: 'Governance & Strategy' },
-            { name: 'Team/Function AI Acceptable Use Policy', credits: 5.00, displayCategory: 'Governance & Strategy' },
-            { name: 'AI Risk Assessment', credits: 75.00, displayCategory: 'Governance & Strategy' },
-            { name: 'AI Executive Planning Session', credits: 30.00, displayCategory: 'Governance & Strategy' },
-            { name: 'AI Maturity Map', credits: 5.00, displayCategory: 'Governance & Strategy' },
-            { name: 'AI Fit Assessment', credits: 10.00, displayCategory: 'Governance & Strategy' },
-            { name: 'Monthly ROI Review', credits: 5.00, displayCategory: 'Governance & Strategy' },
-            { name: 'Key User Working Group', credits: 5.00, displayCategory: 'Governance & Strategy' },
-            // Tools & Infrastructure
-            { name: 'AI Tool Proof of Concept', credits: 20.00, displayCategory: 'Tools & Infrastructure' },
-            { name: 'Tool Integration', credits: 25.00, displayCategory: 'Tools & Infrastructure' },
-            { name: 'Tool Set-Up', credits: 10.00, displayCategory: 'Tools & Infrastructure' },
-            { name: 'Tool Selection & Comparison', credits: 20.00, displayCategory: 'Tools & Infrastructure' },
-            { name: 'Custom GPT', credits: 8.00, displayCategory: 'Tools & Infrastructure' },
-            { name: 'GPT Refinement', credits: 2.50, displayCategory: 'Tools & Infrastructure' },
-            { name: 'Prompt Management System', credits: 20.00, displayCategory: 'Tools & Infrastructure' },
-            { name: 'What Tool for What? Cheatsheet', credits: 1.00, displayCategory: 'Tools & Infrastructure' },
-            // Workflows & Prompting
-            { name: 'AI Workflow Creation', credits: 10.00, displayCategory: 'Workflows & Prompting' },
-            { name: 'Simple Workflow Rewrite', credits: 12.50, displayCategory: 'Workflows & Prompting' },
-            { name: 'Complex Workflow Rewrite', credits: 25.00, displayCategory: 'Workflows & Prompting' },
-            { name: 'Custom Prompts', credits: 2.00, displayCategory: 'Workflows & Prompting' },
-            { name: 'Prompt Refinement', credits: 1.50, displayCategory: 'Workflows & Prompting' },
-            // Training & Support
-            { name: 'Business-Wide AI Fundamentals', credits: 80.00, displayCategory: 'Training & Support' },
-            { name: 'Function or Technique Specific Workshop', credits: 80.00, displayCategory: 'Training & Support' },
-            { name: 'Prompting Workshop', credits: 80.00, displayCategory: 'Training & Support' },
-            { name: 'AMA Session (Full Company)', credits: 50.00, displayCategory: 'Training & Support' },
-            { name: 'AI Tutorials', credits: 2.00, displayCategory: 'Training & Support' },
-            { name: 'AI Q&A Support', credits: 1.00, displayCategory: 'Training & Support' },
-            { name: '1:1 Working Session', credits: 10.00, displayCategory: 'Training & Support' },
-            { name: 'AI Brainstorming Small Group', credits: 10.00, displayCategory: 'Training & Support' },
-            { name: 'Recorded Walkthrough', credits: 2.00, displayCategory: 'Training & Support' },
-        ];
-
-        const creditPacks = [
-            { size: 100, price: 5000 }, { size: 250, price: 11250 },
-            { size: 500, price: 20000 }, { size: 1000, price: 35000 } 
-        ];
-
-        let state = { selectedServices: {} }; // E.g., { "Service Name": quantity }
-
-        const categoriesContainer = document.getElementById('categories-container');
-        const totalCreditsEl = document.getElementById('total-credits');
-        const recommendationsEl = document.getElementById('recommendations');
-        const downloadBtn = document.getElementById('download-btn');
-        const resetBtn = document.getElementById('reset-btn');
-
-        const categories = [...new Set(servicesData.map(s => s.displayCategory))];
-
-        function render() {
-            renderCategories();
-            const totalCredits = calculateTotalCredits();
-            const recommended = calculateRecommendedPacks(totalCredits);
-            
-            totalCreditsEl.textContent = totalCredits.toFixed(2);
-            renderRecommendations(recommended, totalCredits);
-            downloadBtn.disabled = totalCredits === 0;
-        }
-
-        function renderCategories() {
-            categoriesContainer.innerHTML = '';
-            categories.forEach(category => {
-                const categoryServices = servicesData.filter(s => s.displayCategory === category);
-                const categoryCard = document.createElement('div');
-                categoryCard.className = 'themed-card p-6';
-                
-                const servicesHTML = categoryServices.map(service => {
-                    const isChecked = state.selectedServices[service.name] > 0;
-                    const quantity = state.selectedServices[service.name] || 1;
-                    return `
-                        <div class="service-item flex items-center gap-3 py-2 border-b border-slate-100 last:border-b-0">
-                            <input type="checkbox" id="cb-${service.name.replace(/\s/g, '-')}" data-name="${service.name}" class="themed-checkbox flex-shrink-0" ${isChecked ? 'checked' : ''}>
-                            <label for="cb-${service.name.replace(/\s/g, '-')}" class="flex-grow cursor-pointer">
-                                <span class="font-medium text-slate-800">${service.name}</span>
-                                <span class="text-xs text-slate-500 block">${service.credits} credits</span>
-                            </label>
-                            <input type="number" min="1" value="${quantity}" data-name="${service.name}" class="quantity-input w-16 p-1.5 bg-slate-100 border border-slate-200 rounded-md text-center text-sm ${isChecked ? '' : 'hidden'}">
-                        </div>
-                    `;
-                }).join('');
-
-                categoryCard.innerHTML = `
-                    <h3 class="text-xl font-bold text-center mb-4" style="color:#0B66FF;">${category}</h3>
-                    <div class="space-y-1">${servicesHTML}</div>
-                `;
-                categoriesContainer.appendChild(categoryCard);
-            });
-        }
-
-        function renderRecommendations(recommended, totalCredits) {
-            if (totalCredits === 0) {
-                recommendationsEl.innerHTML = `
-                    <div class="text-center py-6 text-slate-500">
-                        <p class="text-sm">Your recommended package and cost will appear here.</p>
-                    </div>`;
-                return;
-            }
-            recommendationsEl.innerHTML = `
-                <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
-                    <div class="font-semibold text-blue-800 mb-2 text-sm">Recommended Package</div>
-                    <div class="space-y-1.5">
-                        ${recommended.packs.map(pack => `
-                            <div class="flex justify-between items-center text-sm">
-                                <span class="font-bold text-slate-900">${pack.count}x ${pack.size.toLocaleString()} Credit Pack</span>
-                                <span class="font-semibold text-slate-700">$${(pack.price * pack.count).toLocaleString()}</span>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-                <div class="bg-green-50 border-2 border-green-200 p-4 rounded-lg text-center mt-4">
-                    <div class="text-sm text-green-800 mb-1">Total Investment</div>
-                    <div class="text-3xl font-extrabold text-green-700">$${recommended.totalCost.toLocaleString()}</div>
-                </div>`;
-        }
-
-        function calculateTotalCredits() {
-            return Object.entries(state.selectedServices).reduce((total, [serviceName, quantity]) => {
-                const service = servicesData.find(s => s.name === serviceName);
-                return total + (service ? service.credits * quantity : 0);
-            }, 0);
-        }
-
-        function calculateRecommendedPacks(totalCredits) {
-            if (totalCredits <= 0) return { packs: [], totalCost: 0 };
-            let bestCombination = [];
-            let lowestCost = Infinity;
-
-            function find(target, currentPacks, cost) {
-                if (cost >= lowestCost) return;
-                if (target <= 0) {
-                    lowestCost = cost;
-                    bestCombination = currentPacks;
-                    return;
-                }
-                for (let i = creditPacks.length - 1; i >= 0; i--) {
-                    const pack = creditPacks[i];
-                    find(target - pack.size, [...currentPacks, pack], cost + pack.price);
-                }
-            }
-            find(totalCredits, [], 0);
-
-            const packCounts = bestCombination.reduce((acc, pack) => {
-                acc[pack.size] = (acc[pack.size] || 0) + 1;
-                return acc;
-            }, {});
-            
-            const finalPacks = Object.entries(packCounts).map(([size, count]) => {
-                const packDetails = creditPacks.find(p => p.size == size);
-                return { ...packDetails, count };
-            }).sort((a,b) => b.size - a.size);
-
-            return { packs: finalPacks, totalCost: lowestCost };
-        }
-        
-        function handleSelectionChange(e) {
-            const target = e.target;
-            const serviceName = target.dataset.name;
-            const serviceItem = target.closest('.service-item');
-            if (!serviceName || !serviceItem) return;
-
-            const quantityInput = serviceItem.querySelector('.quantity-input');
-
-            if (target.type === 'checkbox') {
-                if (target.checked) {
-                    state.selectedServices[serviceName] = parseInt(quantityInput.value) || 1;
-                    quantityInput.classList.remove('hidden');
-                } else {
-                    delete state.selectedServices[serviceName];
-                    quantityInput.classList.add('hidden');
-                }
-            } else if (target.type === 'number') {
-                if (state.selectedServices[serviceName]) {
-                    state.selectedServices[serviceName] = parseInt(target.value) || 1;
-                }
-            }
-            render();
-        }
-        
-        function handleDownloadReport() {
-            const totalCredits = calculateTotalCredits();
-            const recommended = calculateRecommendedPacks(totalCredits);
-
-            const selectedByCategory = Object.entries(state.selectedServices).reduce((acc, [serviceName, quantity]) => {
-                const service = servicesData.find(s => s.name === serviceName);
-                if (service) {
-                    if (!acc[service.displayCategory]) { acc[service.displayCategory] = []; }
-                    acc[service.displayCategory].push({ ...service, quantity });
-                }
-                return acc;
-            }, {});
-
-            const reportHTML = `
-                <!DOCTYPE html>
-                <html lang="en">
-                <head>
-                    <meta charset="UTF-8">
-                    <title>Spark Seneca Estimate Report</title>
-                    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"><\/script>
-                    <style>
-                        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; line-height: 1.6; color: #333; max-width: 800px; margin: 40px auto; padding: 20px; }
-                        #report-content { padding: 20px; border: 1px solid #ddd; border-radius: 8px; background: white; }
-                        h1, h2, h3 { color: #1a1a1a; }
-                        h1 { font-size: 28px; text-align: center; margin-bottom: 20px;}
-                        h2 { font-size: 22px; color: #0B66FF; border-bottom: 1px solid #ddd; padding-bottom: 5px; margin-top: 40px; }
-                        h3 { font-size: 18px; margin-bottom: 10px; }
-                        .summary { background-color: #f8faff; border: 1px solid #e5e7eb; border-radius: 8px; padding: 20px; margin-top: 20px; }
-                        .summary-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #e5e7eb; }
-                        .summary-item:last-child { border-bottom: none; }
-                        .summary-item strong { color: #1a1a1a; }
-                        .total { background-color: #e6f7ec; padding: 15px; text-align: center; border-radius: 8px; margin-top: 20px; }
-                        .total strong { font-size: 24px; color: #047857; }
-                        ul { list-style: none; padding-left: 0; }
-                        li { background: #fff; border: 1px solid #e5e7eb; padding: 10px 15px; margin-bottom: 8px; border-radius: 5px; display: flex; justify-content: space-between; }
-                        li .credits { color: #555; font-size: 0.9em; }
-                        .call-to-action { text-align: center; margin: 20px 0; padding: 20px; background-color: #eef2ff; border-radius: 8px; }
-                        .call-to-action a { color: #0B66FF; text-decoration: none; font-weight: bold; font-size: 1.1em; }
-                        #save-image-btn { display: block; width: 200px; margin: 40px auto 0; padding: 10px 15px; background: #0B66FF; color: white; text-align: center; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; }
-                    </style>
-                </head>
-                <body>
-                    <div id="report-content">
-                        <h1>Estimate Report</h1>
-                        <p style="text-align: center; color: #777;">Generated on: ${new Date().toLocaleDateString()}</p>
-                        <div class="call-to-action">
-                            <p>Want to work with us to build a custom estimate? <a href="https://calendly.com/jimcusick/call-w-jim" target="_blank">Schedule Next Steps</a></p>
-                        </div>
-                        <h2>Selected Services</h2>
-                        ${Object.keys(selectedByCategory).length > 0 ? Object.entries(selectedByCategory).map(([category, services]) => `
-                            <div>
-                                <h3>${category}</h3>
-                                <ul>
-                                    ${services.map(s => `<li><span>${s.quantity}x ${s.name}</span> <span class="credits">${(s.credits * s.quantity).toFixed(2)} credits</span></li>`).join('')}
-                                </ul>
-                            </div>
-                        `).join('') : '<p>No services selected.</p>'}
-                        <h2>Summary</h2>
-                        <div class="summary">
-                            <div class="summary-item">
-                                <span>Total Credits Needed</span>
-                                <strong>${totalCredits.toFixed(2)}</strong>
-                            </div>
-                            ${recommended.packs.map(p => `
-                                <div class="summary-item">
-                                    <span>${p.count}x ${p.size.toLocaleString()} Credit Pack</span>
-                                    <strong>$${(p.price * p.count).toLocaleString()}</strong>
-                                </div>
-                            `).join('')}
-                             <div class="total">
-                                <span>Total Estimated Investment</span><br>
-                                <strong>$${recommended.totalCost.toLocaleString()}</strong>
-                            </div>
-                        </div>
-                    </div>
-                    <button id="save-image-btn">Save as Image</button>
-                    <script>
-                        document.getElementById('save-image-btn').addEventListener('click', () => {
-                            const btn = document.getElementById('save-image-btn');
-                            const reportContent = document.getElementById('report-content');
-                            btn.style.display = 'none'; // Hide button from screenshot
-                            html2canvas(reportContent, { scale: 1.5, backgroundColor: '#f8faff' }).then(canvas => {
-                                const link = document.createElement('a');
-                                link.download = 'Spark-Seneca-Estimate.png';
-                                link.href = canvas.toDataURL('image/png');
-                                link.click();
-                                btn.style.display = 'block'; // Show button again
-                            });
-                        });
-                    <\/script>
-                </body>
-                </html>
-            `;
-
-            const blob = new Blob([reportHTML], { type: 'text/html' });
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = 'Spark-Seneca-Estimate.html';
-            link.click();
-            URL.revokeObjectURL(link.href);
-        }
-        
-        function handleReset() {
-            state.selectedServices = {};
-            render();
-        }
-
-        categoriesContainer.addEventListener('change', handleSelectionChange);
-        categoriesContainer.addEventListener('input', handleSelectionChange);
-        downloadBtn.addEventListener('click', handleDownloadReport);
-        resetBtn.addEventListener('click', handleReset);
-        
-        render();
-    });
-    </script>
+<body>
+<div class="pricing-page">
+<div class="intro-section">
+<h2>Build Your Engagement</h2>
+<p class="intro-sub">Pick services, see your estimate, and we'll <strong>finalize the scope on a call.</strong> Credits work across consulting, done-with-you work, and async builds.</p>
+</div>
+<div class="pricing-packs">
+<div class="pack-card">
+<div class="pack-name">Starter</div>
+<div class="pack-credits">100</div>
+<div class="pack-credits-label">credits</div>
+<div class="pack-price">$5,000</div>
+<div class="pack-per-credit">$50 per credit</div>
+</div>
+<div class="pack-card">
+<div class="pack-name">Pro</div>
+<div class="pack-credits">250</div>
+<div class="pack-credits-label">credits</div>
+<div class="pack-price">$11,250</div>
+<div class="pack-per-credit">$45 per credit</div>
+</div>
+<div class="pack-card">
+<div class="pack-name">Growth</div>
+<div class="pack-credits">500</div>
+<div class="pack-credits-label">credits</div>
+<div class="pack-price">$20,000</div>
+<div class="pack-per-credit">$40 per credit</div>
+</div>
+<div class="pack-card">
+<div class="pack-name">Scale</div>
+<div class="pack-credits">1,000</div>
+<div class="pack-credits-label">credits</div>
+<div class="pack-price">$35,000</div>
+<div class="pack-per-credit">$35 per credit</div>
+</div>
+</div>
+<div class="calc-section">
+<div id="services-container" class="services-wrap"></div>
+<aside class="estimate-panel">
+<h2>Your Estimate</h2>
+<div class="credits-display">
+<div class="credits-label">Total Credits</div>
+<div class="credits-value" id="total-credits">0</div>
+</div>
+<div id="recommendations">
+<div class="recommendation-empty">Pick services and your recommended pack will appear here.</div>
+</div>
+<button id="email-btn" class="btn-email" disabled>Email Me My Estimate</button>
+<a href="https://calendly.com/jimcusick/call-w-jim" target="_blank" rel="noopener" class="btn-call">Book a Call Directly</a>
+<button id="reset-btn" class="btn-reset">Reset Selections</button>
+</aside>
+</div>
+<div class="calc-footer">
+<h3>Need something not on this list?</h3>
+<p>The full service catalog runs deeper than what's shown here. Book a call and I'll walk you through it.</p>
+<a href="https://calendly.com/jimcusick/call-w-jim" target="_blank" rel="noopener" class="footer-btn">Book a Call</a>
+</div>
+</div>
+<script>
+(function(){
+const services = [
+{name:'Strategic Planning Session', credits:30, category:'Strategy & Advisory'},
+{name:'Monthly Advisory', credits:20, category:'Strategy & Advisory'},
+{name:'Maturity Assessment', credits:5, category:'Strategy & Advisory'},
+{name:'Sales Tech Audit', credits:25, category:'Audits & Builds'},
+{name:'Sales Navigator Activation', credits:40, category:'Audits & Builds'},
+{name:'Custom App Build', credits:50, category:'Audits & Builds'},
+{name:'Tool Setup & Integration', credits:25, category:'Audits & Builds'},
+{name:'AI Workflow Build', credits:10, category:'Workflows & Systems'},
+{name:'Workflow Rewrite', credits:15, category:'Workflows & Systems'},
+{name:'Custom GPT Build', credits:8, category:'Workflows & Systems'},
+{name:'1:1 Working Session (90 min)', credits:10, category:'Sessions & Training'},
+{name:'Team Workshop (function-specific)', credits:80, category:'Sessions & Training'}
+];
+const packs = [{size:100,price:5000},{size:250,price:11250},{size:500,price:20000},{size:1000,price:35000}];
+const FILLOUT_URL = 'YOUR_FILLOUT_URL_HERE';
+const state = {selected:{}};
+const container = document.getElementById('services-container');
+const totalEl = document.getElementById('total-credits');
+const recsEl = document.getElementById('recommendations');
+const emailBtn = document.getElementById('email-btn');
+const resetBtn = document.getElementById('reset-btn');
+function render(){
+const cats = [...new Set(services.map(s=>s.category))];
+container.innerHTML = cats.map(cat=>{
+const items = services.filter(s=>s.category===cat).map(s=>{
+const safeId = 'cb-'+s.name.replace(/[^a-z0-9]/gi,'-');
+const checked = !!state.selected[s.name];
+const qty = state.selected[s.name] || 1;
+return '<div class="service-item"><input type="checkbox" id="'+safeId+'" class="themed-checkbox" data-name="'+s.name+'" '+(checked?'checked':'')+'><label for="'+safeId+'" class="service-label"><span class="service-name">'+s.name+'</span><span class="service-credits">'+s.credits+' credits each</span></label><input type="number" min="1" value="'+qty+'" data-name="'+s.name+'" class="quantity-input '+(checked?'':'hidden')+'"></div>';
+}).join('');
+return '<div class="category-card"><h3>'+cat+'</h3>'+items+'</div>';
+}).join('');
+const total = calcTotal();
+totalEl.textContent = total;
+renderRecs(total);
+emailBtn.disabled = total === 0;
+}
+function calcTotal(){
+return Object.entries(state.selected).reduce((sum,[name,qty])=>{
+const svc = services.find(s=>s.name===name);
+return sum + (svc?svc.credits*qty:0);
+},0);
+}
+function renderRecs(total){
+if(total === 0){
+recsEl.innerHTML = '<div class="recommendation-empty">Pick services and your recommended pack will appear here.</div>';
+return;
+}
+const rec = findBestPacks(total);
+const packLines = rec.packs.map(p=>'<div class="rec-item"><span class="rec-pack">'+p.count+'× '+p.size.toLocaleString()+' credits</span><span class="rec-price">$'+(p.price*p.count).toLocaleString()+'</span></div>').join('');
+recsEl.innerHTML = '<div class="recommendation-block"><div class="rec-label">Recommended Pack</div>'+packLines+'</div><div class="total-block"><div class="total-label">Estimated Investment</div><div class="total-value">$'+rec.total.toLocaleString()+'</div></div>';
+}
+function findBestPacks(target){
+let best=[],low=Infinity;
+function search(t,used,cost){
+if(cost>=low) return;
+if(t<=0){low=cost;best=used;return;}
+for(let i=packs.length-1;i>=0;i--){
+search(t-packs[i].size,[...used,packs[i]],cost+packs[i].price);
+}
+}
+search(target,[],0);
+const counts = best.reduce((acc,p)=>{acc[p.size]=(acc[p.size]||0)+1;return acc;},{});
+const finalPacks = Object.entries(counts).map(([size,count])=>{
+const p = packs.find(x=>x.size==size);
+return {size:p.size,price:p.price,count:count};
+}).sort((a,b)=>b.size-a.size);
+return {packs:finalPacks,total:low};
+}
+function openFillout(){
+const total = calcTotal();
+const rec = findBestPacks(total);
+const packsStr = rec.packs.map(p=>p.count+'x '+p.size+' credit pack').join(', ');
+const servicesStr = Object.entries(state.selected).map(([n,q])=>q+'x '+n).join(', ');
+const url = new URL(FILLOUT_URL);
+url.searchParams.set('total_credits', total);
+url.searchParams.set('recommended_packs', packsStr);
+url.searchParams.set('total_price', '$'+rec.total.toLocaleString());
+url.searchParams.set('services_selected', servicesStr);
+window.open(url.toString(), '_blank');
+}
+container.addEventListener('change',e=>{
+const t = e.target;
+if(t.type==='checkbox'){
+const name = t.dataset.name;
+const qty = t.closest('.service-item').querySelector('.quantity-input');
+if(t.checked){
+state.selected[name] = parseInt(qty.value)||1;
+qty.classList.remove('hidden');
+} else {
+delete state.selected[name];
+qty.classList.add('hidden');
+}
+render();
+} else if(t.type==='number'){
+const name = t.dataset.name;
+if(state.selected[name] !== undefined){
+state.selected[name] = parseInt(t.value)||1;
+render();
+}
+}
+});
+emailBtn.addEventListener('click',openFillout);
+resetBtn.addEventListener('click',()=>{state.selected={};render();});
+render();
+})();
+</script>
 </body>
 </html>
