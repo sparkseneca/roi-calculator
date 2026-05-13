@@ -190,7 +190,7 @@ body{font-family:'Inter',sans-serif;background:#ffffff;color:#1a1a1a;margin:0;pa
 <h3>Need something not on this list?</h3>
 <p>The full service catalog runs deeper than what's shown here.</p>
 <div class="footer-buttons">
-<a href="#" id="catalog-btn" class="footer-btn-secondary">See Full Catalog →</a>
+<a href="https://sparkseneca.com/#full-pricing" target="_top" class="footer-btn-secondary">See Full Catalog →</a>
 <a href="https://calendly.com/jimcusick/call-w-jim" target="_blank" rel="noopener" class="footer-btn-primary">Book a Call</a>
 </div>
 </div>
@@ -210,7 +210,7 @@ const services = [
 {name:'AI Workflow Build', credits:10, category:'Workflows & Systems', tag:'starting'},
 {name:'Workflow Rewrite', credits:15, category:'Workflows & Systems', tag:'starting'},
 {name:'Custom GPT Build', credits:8, category:'Workflows & Systems', tag:'fixed'},
-{name:'1:1 Working Session', credits:10, category:'Sessions & Training', tag:'fixed'},
+{name:'1:1 Working Session (90 min)', credits:10, category:'Sessions & Training', tag:'fixed'},
 {name:'Team Workshop (function-specific)', credits:40, category:'Sessions & Training', tag:'starting'},
 {name:'Growth by Proxy — Setup', credits:40, category:'Done For You', tag:'fixed'},
 {name:'Growth by Proxy — Monthly', credits:50, category:'Done For You', tag:'perseat', tagLabel:'per seat/mo'},
@@ -224,14 +224,12 @@ const packs = [
 {size:1000,price:35000,name:'Scale',installments:4}
 ];
 const EMAIL_ESTIMATE_URL = 'YOUR_EMAIL_ESTIMATE_FILLOUT_URL';
-const FULL_CATALOG_URL = 'https://sparkseneca.com/#full-pricing';
 const state = {selected:{}};
 const container = document.getElementById('services-container');
 const totalEl = document.getElementById('total-credits');
 const recsEl = document.getElementById('recommendations');
 const emailBtn = document.getElementById('email-btn');
 const resetBtn = document.getElementById('reset-btn');
-const catalogBtn = document.getElementById('catalog-btn');
 
 function tagPill(tag, label){
 if(tag==='starting') return '<span class="tag-pill tag-starting">Starting At</span>';
@@ -315,11 +313,6 @@ url.searchParams.set('services_selected', servicesStr);
 window.open(url.toString(), '_blank');
 }
 
-function openCatalogRequest(e){
-e.preventDefault();
-window.open(FULL_CATALOG_URL, '_blank');
-}
-
 container.addEventListener('change',e=>{
 const t = e.target;
 if(t.type==='checkbox'){
@@ -343,7 +336,6 @@ render();
 });
 emailBtn.addEventListener('click',openEmailEstimate);
 resetBtn.addEventListener('click',()=>{state.selected={};render();});
-catalogBtn.addEventListener('click',openCatalogRequest);
 render();
 })();
 </script>
